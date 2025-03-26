@@ -78,7 +78,8 @@ class Node
     }
 }
 
-class pair {
+//ячейка лабиринта
+class mazeCell {
     constructor(y, x) {
         this.y = y;
         this.x = x;
@@ -87,15 +88,25 @@ class pair {
 
 function astar(mazeMap, startPoint_x, startPoint_y, endPoint_x, endPoint_y) {
     let adjacencyMatrix = getAdjacencyMatrixFromMaze(mazeMap);
-    let openSet = [];
-    let closedSet = [];
-    let finalWay = [];
+    let queue = []; //текущая очередь на рассмотрение
+    let closedSet = []; //то, где мы уже были
+    let finalWay = [];//путь от старта до финиша
 
-    let queue = [];
-    let start = new pair(startPoint_y, startPoint_x);
+    let start = new mazeCell(startPoint_y, startPoint_x);
+    let end = new mazeCell(endPoint_y, endPoint_x);
+
     queue.push(start);
+    while (queue || queue.length) {
+        let p = queue[0];
+        queue.shift();
 
-    while (!queue || !queue.length) {
+        if (x in clodedSet) continue;
 
+        if (x == end) return p;
+
+        for (vertex of getAdjacentVertices(mazeMap, i, j)){
+            queue.push(vertex);
+        }
     }
+    return -1;
 }

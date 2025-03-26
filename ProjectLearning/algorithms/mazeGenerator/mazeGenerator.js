@@ -1,3 +1,10 @@
+class mazeCell {
+    constructor(y, x) {
+        this.y = y;
+        this.x = x;
+    }
+}
+
 //generate an array x by x and fill it with the n
 function createSquareMatrix(size, value = 0) {
     return Array.from({ length: size }, () => Array.from({ length: size }, () => value))
@@ -37,7 +44,32 @@ function getAdjacencyMatrixFromMaze(maze) {
     return adjacencyMatrix;
 }
 
+//возвращает смежные вершины (пары индексов)
+function getAdjacentVertices(maze, i, j) {
+    let adjacent = [];
+    if (j - 1 >= 0 && !maze[i][j-1]) {
+        adjacent.push(mazeCell(i, j-1));
+    }//left
+    if (i - 1 >= 0 && !maze[i-1][j]) {
+        adjacent.push(mazeCell(i-1, j));
+    }//up
+    if (j + 1 < maze[0].length && !maze[i][j+1]) {
+        adjacent.push(mazeCell(i, j+1));
+    }//right
+    if (i + 1 < maze[0].length && !maze[i+1][j]) {  
+        adjacent.push(mazeCell(i+1, j));
+    }//down
+}
+
 function squareMazeGenerator(size) {
     var maze = createSquareMatrix(size, 0);
     //TODO maze gen.
 }
+
+let m = [
+    [0,1,0],
+    [1,0,0],
+    [0,0,1],
+];
+
+console.log(getAdjacencyMatrixFromMaze(m, 1, 1));
