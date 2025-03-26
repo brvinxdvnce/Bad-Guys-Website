@@ -1,4 +1,4 @@
-ReactDOM.render(<h1>HI</h1>, document.getElementById("app"))
+ReactDOM.render(<></>, document.getElementById("app"))
 console.log("Program Is working!")
 
 
