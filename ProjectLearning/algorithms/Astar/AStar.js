@@ -79,7 +79,7 @@ class Node
 }
 
 //ячейка лабиринта
-class mazeCell {
+class MazeCell {
     constructor(y, x) {
         this.y = y;
         this.x = x;
@@ -92,8 +92,8 @@ function astar(mazeMap, startPoint_x, startPoint_y, endPoint_x, endPoint_y) {
     let closedSet = []; //то, где мы уже были
     let finalWay = [];//путь от старта до финиша
 
-    let start = new mazeCell(startPoint_y, startPoint_x);
-    let end = new mazeCell(endPoint_y, endPoint_x);
+    let start = new MazeCell(startPoint_y, startPoint_x);
+    let end = new MazeCell(endPoint_y, endPoint_x);
 
     queue.push(start);
     while (queue || queue.length) {

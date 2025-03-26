@@ -1,4 +1,4 @@
-class mazeCell {
+class MazeCell {
     constructor(y, x) {
         this.y = y;
         this.x = x;
@@ -48,17 +48,18 @@ function getAdjacencyMatrixFromMaze(maze) {
 function getAdjacentVertices(maze, i, j) {
     let adjacent = [];
     if (j - 1 >= 0 && !maze[i][j-1]) {
-        adjacent.push(mazeCell(i, j-1));
+        adjacent.push(new MazeCell(i, j-1));
     }//left
     if (i - 1 >= 0 && !maze[i-1][j]) {
-        adjacent.push(mazeCell(i-1, j));
+        adjacent.push(new MazeCell(i-1, j));
     }//up
     if (j + 1 < maze[0].length && !maze[i][j+1]) {
-        adjacent.push(mazeCell(i, j+1));
+        adjacent.push(new MazeCell(i, j+1));
     }//right
     if (i + 1 < maze[0].length && !maze[i+1][j]) {  
-        adjacent.push(mazeCell(i+1, j));
+        adjacent.push(new MazeCell(i+1, j));
     }//down
+    return adjacent;
 }
 
 function squareMazeGenerator(size) {
@@ -72,4 +73,4 @@ let m = [
     [0,0,1],
 ];
 
-console.log(getAdjacencyMatrixFromMaze(m, 1, 1));
+console.log(getAdjacentVertices(m, 1, 1));
