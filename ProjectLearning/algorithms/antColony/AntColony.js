@@ -112,6 +112,8 @@ class Ant{
         let randomNumber = Math.random();
         let nextPoint;
 
+        choseNeighbor[choseNeighbor.length - 1] = 1; // устанавливаем конечный промежуток равный 1
+
         // произвольное значение попадает на один из промежутков choseNeighbor. Значит, в эту точку муравей и пойдет
         for(let i = 0; i < available.length; i++){
             if(randomNumber <= choseNeighbor[i]){
@@ -119,6 +121,7 @@ class Ant{
                 break;
             }
         }
+
         this.antWay.push(nextPoint);
         this.antDistance += matrix[this.currentPoint][nextPoint];
         this.antVisited[nextPoint] = true;
@@ -126,8 +129,7 @@ class Ant{
     }
 }
 
-function antAlgorithm(){
-    var points = []; // массив точек; заполните его объектами Point
+function antAlgorithm(points){
     var countPoint = points.length;
     var matrix = makeMatrixDistance(countPoint, points); // матрица смежности
     var pheromone = pheromoneMatrix(countPoint, points, 0.5); // количество ферамонов на ребре
@@ -138,7 +140,7 @@ function antAlgorithm(){
     const takePheromone = 5; // прибавка к ферамонам
     const evaporation = 0.8; // коэффициент испарения
     
-    var iterationWithoutProgress = 50; // сколько итераций допускается без развития прогресса
+    var iterationWithoutProgress = 1000; // сколько итераций допускается без развития прогресса
     var countOfProgress = 0; // счетчик итераций без прогресса
     var bestWay = []; // наилучший путь
     var bestDistance = INF; // наилучшая дистанция
@@ -195,3 +197,6 @@ function antAlgorithm(){
 
     return bestWay;
 }
+
+
+
