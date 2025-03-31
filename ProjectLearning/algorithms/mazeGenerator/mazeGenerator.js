@@ -62,15 +62,57 @@ function getAdjacentVertices(maze, i, j) {
     return adjacent;
 }
 
-function squareMazeGenerator(size) {
-    var maze = createSquareMatrix(size, 0);
-    //TODO maze gen.
+class Grid {
+    constructor(cellCountInSide) {
+        this.canvas = document.getElementById('maze_field');
+        this.ctx = this.canvas.getContext('2d');
+
+        this.canvas.width  = 1000;
+        this.canvas.height = 1000;
+
+        this.grid = createSquareMatrix(cellCountInSide, 0);
+
+        this.cellCountInSide = cellCountInSide;
+        this.cellWidth = this.canvas.width /  cellCountInSide;
+        this.cellHeight = this.canvas.height /  cellCountInSide;
+        
+        this.canvas.addEventListener('click', (e) => this.handleClick(e));
+    }
+
+    draw() {
+        for(let i = 0; i < this.cellCountInSide; i++) {
+            for(let j = 0; j < this.cellCountInSide; j++) {
+
+                this.ctx.fillStyle = this.grid[i][j] ? '#000000' : '#ffffff';
+
+                this.ctx.fillRect(
+                    j * this.cellHeight,
+                    i * this.cellWidth,
+                    (j + 1) * this.cellHeight,
+                    (i + 1) * this.cellWidth,);
+            }
+        }
+    }
+
+    // Обработка клика
+    handleClick(event) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = event.clientX;
+        const y = event.clientY;
+        
+        const col = Math.floor(x / this.cellSize);
+        const row = Math.floor(y / this.cellSize);
+        
+        this.grid[row][col] = this.grid[row][col] ? 0 : 1;
+        this.draw();
+    }
+
+    squareMazeGenerator() {
+        for(let i = 0; i < this.cellCountInSide; i++) {
+            for(let j = 0; j < this.cellCountInSide; j++) {
+                this.grid[i][j] = Math.floor(Math.random() * 2);
+            }
+        }
+        this.draw();
+    }
 }
-
-let m = [
-    [0,1,0],
-    [1,0,0],
-    [0,0,1],
-];
-
-console.log(getAdjacentVertices(m, 1, 1));

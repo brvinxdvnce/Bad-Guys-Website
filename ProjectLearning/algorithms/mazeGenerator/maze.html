@@ -1,31 +1,19 @@
-<!-- Just a test file idk lol -->
-<!-- 
-
-главное меню -> 6 html
-    алгоритмы 
-        
-
-
-
-
--->>
 <html>
-    <body>
-        <canvas id = "canv" > </canvas>
-        <script>
-            
-            <canvas id="maze_field"></canvas>
-            var ground = document.getElementById("canv").getContext("2d");
-            
-            ground.canvas.widht = 800;
-            ground.canvas.height = 800;
-
-            var matrix = squareMazeGenerator(15);
-
-            function drawMaze() {
-                
+    <head>
+        <style>
+            canvas {
+                border: 10px solid black;
             }
-
+        </style>
+    </head>
+    <body>
+        <canvas id = "maze_field" > </canvas>
+        
+        <script src = "mazeGenerator.js"></script>
+        <script>            
+            grid = new Grid(25);
+            grid.draw();
+            grid.squareMazeGenerator()
         </script>
     </body>
 </html>
