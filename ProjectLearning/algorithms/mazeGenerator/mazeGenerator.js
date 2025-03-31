@@ -97,11 +97,8 @@ class Grid {
     // Обработка клика
     handleClick(event) {
         const rect = this.canvas.getBoundingClientRect();
-        const x = event.clientX;
-        const y = event.clientY;
-        
-        const col = Math.floor(x / this.cellSize);
-        const row = Math.floor(y / this.cellSize);
+        const row = Math.floor((event.clientY) / this.cellHeight);
+        const col = Math.floor((event.clientX) / this.cellHeight);
         
         this.grid[row][col] = this.grid[row][col] ? 0 : 1;
         this.draw();
