@@ -1,0 +1,9 @@
+body {
+    background-image: url('mazeBackGround.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+canvas {
+    border: 10px solid black;
+}

@@ -1,20 +1,22 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <style>
-            canvas {
-                border: 10px solid black;
-            }
-        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="mazeStyle.css">
     </head>
     <body>
-        
-        <canvas id = "maze_field" width="1000" height="1000" > </canvas>
+        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <canvas id = "maze_field" width="1000" height="1000" > </canvas>
+        </div>
         
         <script src = "mazeGenerator.js"></script>
         <script>            
             grid = new Grid(25);
             grid.draw();
             grid.squareMazeGenerator()
+
         </script>
     </body>
 </html>
