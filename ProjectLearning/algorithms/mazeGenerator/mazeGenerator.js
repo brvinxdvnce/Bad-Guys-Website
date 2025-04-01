@@ -73,7 +73,7 @@ class Grid {
                     case 2: //старт пути
                         this.ctx.fillStyle = "rgb(5, 177, 51)";
                         break;
-                    case 3: //конец пути (в генерации лабиринта - вершина в очереди, для красоты)
+                    case 3: //конец пути
                         this.ctx.fillStyle = "rgb(207, 44, 44)";
                         break;
                     case 4: //элементы, где прошелся алгоритм А*
@@ -131,9 +131,13 @@ class Grid {
     }
 
     generateMaze() {
+        // для норм отображения сторона либиринта должна быть нечетной длины, иначе
+        //получается некрасиво
         this.grid = createSquareMatrix(this.cellCountInSide, 1);
         let startX = getRandomInt(0, this.cellCountInSide);
+        startX += startX % 2;
         let startY = getRandomInt(0, this.cellCountInSide);
+        startY += startY % 2;
         this.grid[startX][startY] = 0;
         this.draw();
         
@@ -144,8 +148,8 @@ class Grid {
             if (x >= 0 && y >= 0 &&
                 x < this.cellCountInSide &&
                 y < this.cellCountInSide &&
-                !inQueue[x][y] && this.grid[x][y] === 1) {
-                queue.push({ x, y });
+                !inQueue[x][y] && this.grid[x][y] >= 1) {
+                queue.push({x : x, y : y });
                 inQueue[x][y] = true;
             }
         };
@@ -180,18 +184,17 @@ class Grid {
                 this.grid[x + 2][y] == 0) {
                 neighbors.push({x: x + 1, y: y});
             }
-    
-            if (neighbors.length > 0) {
-                let randNeighbor = neighbors[getRandomInt(0, neighbors.length)];
-                this.grid[randNeighbor.x][randNeighbor.y] = 0;
-                this.grid[x][y] = 0; // Добавляем клетку в лабиринт только после соединения
-    
-                // Добавляем соседние клетки в очередь
-                addToQueue(x, y - 2);
-                addToQueue(x, y + 2);
-                addToQueue(x - 2, y);
-                addToQueue(x + 2, y);
-            }
+
+            let randNeighbor = neighbors[getRandomInt(0, neighbors.length)];
+            this.grid[randNeighbor.x][randNeighbor.y] = 0;
+            this.grid[x][y] = 0; // Добавляем клетку в лабиринт только после соединения
+
+            // Добавляем соседние клетки в очередь
+            addToQueue(x, y - 2);
+            addToQueue(x, y + 2);
+            addToQueue(x - 2, y);
+            addToQueue(x + 2, y);
+        
         }
         this.draw();
     }
