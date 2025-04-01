@@ -1,3 +1,4 @@
+
 function getRandomInt(min, max) {
     if (min == max) return min;
     return Math.floor(1/Math.random() % (max - min) + min);
@@ -63,17 +64,23 @@ class Grid {
             for(let j = 0; j < this.cellCountInSide; j++) {
 
                 switch (this.grid[i][j]) {
-                    case 0:
+                    case 0: //свободная зона
                         this.ctx.fillStyle = "rgb(255, 255, 255)";
                         break;
-                    case 1:
+                    case 1: //стена
                         this.ctx.fillStyle = "rgb(0,0,0)";
                         break;
-                    case 2:
+                    case 2: //старт пути
                         this.ctx.fillStyle = "rgb(5, 177, 51)";
                         break;
-                    case 3:
+                    case 3: //конец пути (в генерации лабиринта - вершина в очереди, для красоты)
                         this.ctx.fillStyle = "rgb(207, 44, 44)";
+                        break;
+                    case 4: //элементы, где прошелся алгоритм А*
+                        this.ctx.fillStyle = "rgb(245, 208, 86)";
+                        break;
+                    case 5: //пограничные вершины для алгоритма А*
+                        this.ctx.fillStyle = "rgb(237, 138, 0)";
                         break;
                 }
 
@@ -114,7 +121,7 @@ class Grid {
         return adjacent;
     }
 
-    squareMazeGenerator() {
+    randomMazeGenerator() {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
                 this.grid[i][j] = Math.floor(Math.random() * 2);
@@ -125,90 +132,67 @@ class Grid {
 
     generateMaze() {
         this.grid = createSquareMatrix(this.cellCountInSide, 1);
-        let x = getRandomInt(0, this.cellCountInSide);
-        let y = getRandomInt(0, this.cellCountInSide);
-        this.grid[x][y] = 0;
+        let startX = getRandomInt(0, this.cellCountInSide);
+        let startY = getRandomInt(0, this.cellCountInSide);
+        this.grid[startX][startY] = 0;
         this.draw();
         
-        queue = [];
-        if (y - 2 >= 0) {
-            queue.push({x: x, y: y - 1});
-        }
-        if (y + 2 < this.cellCountInSide) {
-            queue.push({x: x, y: y + 1});
-        }
-        if (x - 2 >= 0) {
-            queue.push({x: x - 1, y: y});
-        }
-        if (x + 2 < this.cellCountInSide) { 
-            queue.push({x: x + 1, y: y});
-        }
+        let queue = [];
+        let inQueue = createSquareMatrix(this.cellCountInSide, 0);
+        
+        const addToQueue = (x, y) => {
+            if (x >= 0 && y >= 0 &&
+                x < this.cellCountInSide &&
+                y < this.cellCountInSide &&
+                !inQueue[x][y] && this.grid[x][y] === 1) {
+                queue.push({ x, y });
+                inQueue[x][y] = true;
+            }
+        };
+
+        addToQueue(startX, startY - 2);
+        addToQueue(startX, startY + 2);
+        addToQueue(startX - 2, startY);
+        addToQueue(startX + 2, startY);
 
         while (queue.length > 0) {
             let index = getRandomInt(0, queue.length);
-            cell = queue[index];
+            let cell = queue[index];
             queue.splice(index, 1); // Удалить 1 элемент, начиная с индекса
-            x = cell.x;
-            y = cell.y;
+            let x = cell.x;
+            let y = cell.y;
             this.grid[x][y] = 0;
 
-            // The cell you just cleared needs to be connected with another clear cell.
-            // Look two orthogonal spaces away from the cell you just cleared until you find one that is not a wall.
-            // Clear the cell between them.
-            let directions =
-            [
-                {x: x, y: y - 1, direct: up},
-                {x: x, y: y + 1, direct: down},
-                {x: x + 1, y: y, direct: right },
-                {x: x - 1   , y: y, direct: left }
-            ];
-            
-            while (directions.length > 0) {
-                let dir_index = getRandomInt(0, directions.length);
-
-                switch (directions[dir_index].direct) {
-                case up:
-                    if (y - 2 >= 0 && grid[x][y - 2] == 0) {
-                        this.grid[x][y - 1] = 0;
-                        directions = [];
-                    }
-                    break;
-                case down:
-                    if (y + 2 < this.cellCountInSide && grid[x][y + 2] == 0) {
-                        this.grid[x][y + 1] = 0;
-                        directions = [];
-                    }
-                    break;
-                case right:
-                    if (x - 2 >= 0 && grid[x - 2][y] == 0) {
-                        this.grid[x - 1][y] = 0;
-                        directions = [];
-                    }
-                    break;
-                case left:
-                    if (x + 2 < this.cellCountInSide && grid[x + 2][y] == 0) {
-                        this.grid[x + 1][y] = 0;
-                        directions = [];
-                    }
-                    break;
-                }
-                directions.remove(dir_index, 1);
+            let neighbors = [];
+            if (y - 2 >= 0 &&
+                this.grid[x][y - 2] == 0) {
+                neighbors.push({x: x, y: y - 1});
             }
-
-            // Add valid cells that are two orthogonal spaces away from the cell you cleared.
-            if (y - 2 >= 0 && grid[x][y - 2] == 1) {
-                queue.push({x: x, y : y - 1});
+            if (y + 2 < this.cellCountInSide &&
+                this.grid[x][y + 2] == 0) {
+                neighbors.push({x: x, y: y + 1});
             }
-            if (y + 2 < height && grid[x][y + 2] == 1) {
-                queue.push({x: x, y : y + 1});
+            if (x - 2 >= 0 &&
+                this.grid[x - 2][y] == 0) {
+                neighbors.push({x: x - 1, y: y});
             }
-            if (x - 2 >= 0 && grid[x - 2][y] == 1) {
-                queue.push({x: x - 1, y : y});
+            if (x + 2 < this.cellCountInSide &&
+                this.grid[x + 2][y] == 0) {
+                neighbors.push({x: x + 1, y: y});
             }
-            if (x + 2 < width && grid[x + 2][y] == 1) {
-                queue.push({x: x + 1, y : y});
+    
+            if (neighbors.length > 0) {
+                let randNeighbor = neighbors[getRandomInt(0, neighbors.length)];
+                this.grid[randNeighbor.x][randNeighbor.y] = 0;
+                this.grid[x][y] = 0; // Добавляем клетку в лабиринт только после соединения
+    
+                // Добавляем соседние клетки в очередь
+                addToQueue(x, y - 2);
+                addToQueue(x, y + 2);
+                addToQueue(x - 2, y);
+                addToQueue(x + 2, y);
             }
         }
-        draw();
+        this.draw();
     }
 }
