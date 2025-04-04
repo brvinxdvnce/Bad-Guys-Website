@@ -9,6 +9,13 @@
     <body>
         <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
             <canvas id = "maze_field" width="1000" height="1000" > </canvas>
+
+            <input type="number" id="size_input" placeholder="maze size:">
+            
+            <button onclick="processData()">regen maze</button>
+            <button onclick="processData()">start a*</button>
+            <button onclick="processData()">?</button>
+            <button onclick="processData()">?</button>
         </div>
         
         <script src = "mazeGenerator.js"></script>

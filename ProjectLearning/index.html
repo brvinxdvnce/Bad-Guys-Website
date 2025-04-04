@@ -9,17 +9,26 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
     <div id = "app"></div>
 
-    <button style = "display: block"; onclick= "document.location = 'algorithms/antColony/AntColony.html'">Ant Colony</button>
-    <button style = "display: block"; onclick= "document.location = 'algorithms/mazeGenerator/maze.html'">A_star</button>
-    <button style = "display: block"; onclick= "document.location = 'index.html'">Clustering</button>
-    <button style = "display: block"; onclick= "document.location = 'index.html'">Decision Tree</button>
-    <button style = "display: block"; onclick= "document.location = 'index.html'">Genetic Alg</button>
-    <button style = "display: block"; onclick= "document.location = 'algorithms/NeuralNetwork/NeuralNetwork.html'">Neural Network</button>
+    <button class = "main_buttons"; style = "display: block"; onclick= "document.location = 'algorithms/antColony/AntColony.html'">Ant Colony</button>
+    <button class = "main_buttons"; style = "display: block"; onclick= "document.location = 'algorithms/mazeGenerator/maze.html'">A_star</button>
+    <button class = "main_buttons"; style = "display: block"; onclick= "document.location = 'index.html'">Clustering</button>
+    <button class = "main_buttons"; style = "display: block"; onclick= "document.location = 'index.html'">Decision Tree</button>
+    <button class = "main_buttons"; style = "display: block"; onclick= "document.location = 'index.html'">Genetic Alg</button>
+    <button class = "main_buttons"; style = "display: block"; onclick= "document.location = 'algorithms/NeuralNetwork/NeuralNetwork.html'">Neural Network</button>
+    
+    <dialog id="dialogWindow">
+        <p>hello</p>
+        <button onclick="document.getElementById('dialogWindow').close()">Закрыть</button>
+      </dialog>  
+    <button onclick="document.getElementById('dialogWindow').showModal()">info</button>
+
 
     <script src = "js_main_logic/index.js", type = "text/babel"></script>
 </body>
