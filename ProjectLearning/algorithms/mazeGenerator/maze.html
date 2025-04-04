@@ -16,14 +16,14 @@
                 <input class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
             
                 <button class = "maze_buttons"; onclick="canv.generateMaze()">update Grid</button>
-                <button class = "maze_buttons"; onclick="canv.goAStar({x: 0, y:0}, {x:10, y:10})">start a*</button>
+                <button class = "maze_buttons"; onclick="canv.goAStar({x: 0, y:0}, {x: 40, y:40})">start a*</button>
                 <button class = "maze_buttons"; onclick="sss">testtest</button>
                 <button class = "maze_buttons"; onclick="processData()">?</button>
             </div>
         </div>
         
         <script>            
-            canv = new Grid(21);
+            canv = new Grid(41);
             canv.draw();
             canv.generateMaze();
         </script>

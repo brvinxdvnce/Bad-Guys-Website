@@ -119,8 +119,8 @@ class Grid {
         let cell;
         for (cell of way) {
             this.grid[cell.y][cell.x] = 6;
-            this.draw();
         }
+        this.draw();
     }
 
     // Обработка клика
@@ -129,7 +129,7 @@ class Grid {
         const row = Math.floor((event.clientY - rect.top) / this.cellHeight);
         const col = Math.floor((event.clientX - rect.left) / this.cellHeight);
         
-        this.grid[row][col] = this.grid[row][col] ? 0 : 1;
+        this.grid[row][col] = this.grid[row][col] == 1 ? 0 : 1;
         this.draw();
     }
     
@@ -235,7 +235,7 @@ class Grid {
         return Math.abs(node1.x - node2.x) + Math.abs(node1.y - node2.y);
     }
 
-    goAStar(startPoint, endPoint) {
+    async goAStar(startPoint, endPoint) {
         let startCell = new Cell(startPoint.x, startPoint.y);
         let endCell = new Cell(endPoint.x, endPoint.y);
         
@@ -259,13 +259,14 @@ class Grid {
         // но финиша не было - лютый анлак, значит пути нет
 
         while (queue.length > 0 ) {
-            // Найти узел с минимальной стоимостью в очереди -> изьять его -> отметить в visited (как строку!)
+            // найти узел с минимальной стоимостью в очереди -> изьять его -> отметить в visited (как строку!)
             let currentNode = getMinQuEl(queue);
             queue.splice(queue.indexOf(currentNode), 1);
             visited.add(`${currentNode.x},${currentNode.y}`);
             this.grid[currentNode.y][currentNode.x] = 4;
+            //this.draw();
 
-            // Проверка достижения цели
+            // проверка достижения цели
             if (currentNode.x === endPoint.x && currentNode.y === endPoint.y) {
                 const way = [];
                 let current = currentNode;
@@ -287,12 +288,12 @@ class Grid {
                 if (visited.has(`${x},${y}`)) continue;
                 const neighbor = new Cell(x, y, currentNode);
 
-                // Вычислить стоимости
+                // вычислить стоимости
                 neighbor.g = currentNode.g + 1;
                 neighbor.h = this.distance(neighbor, endPoint);
                 neighbor.f = neighbor.g + neighbor.h;
 
-                // Проверить, есть ли сосед в queue с лучшим g
+                // проверить, есть ли сосед в queue с лучшим g
                 const existingNode = queue.find(n => n.x === x && n.y === y);
                 if (existingNode) {
                     if (neighbor.g < existingNode.g) {
@@ -306,45 +307,7 @@ class Grid {
                 }
             }
         }
+        this.draw();
         return; // Путь не найден
         }
     }
-
-
-    // let startPoint_x = startPoint.x;
-    // let startPoint_y = startPoint.y;
-    // let endPoint_x = endPoint.x;
-    // let endPoint_y = endPoint.y;
-    
-    // let adjacencyMatrix = getAdjacencyMatrixFromMaze(this.grid);
-    // let queue = []; //текущая очередь на рассмотрение
-    // let closedSet = []; //то, где мы уже были
-    // let finalWay = [];//путь от старта до финиша
-
-    // let start = new MazeCell(startPoint_y, startPoint_x);
-    // let end = new MazeCell(endPoint_y, endPoint_x);
-
-    // queue.push(start);
-    // while (queue || queue.length) {
-    //     let p = queue[0];
-    //     queue.shift();
-
-    //     if (x in clodedSet) continue;
-
-    //     if (x == end) return p;
-
-    //     for (vertex of getAdjacentVertices(this.grid, i, j)){
-    //         queue.push(vertex);
-    //     }
-    // }
-    // return -1;
-    // }
-
-
-
-    // function sss() {
-    //     let size = parseInt(document.getElementById('size_input').value) || 21;
-    //     canv = new Grid(size || 21);
-    //     canv.draw();
-    //     canv.generateMaze();
-    //}
