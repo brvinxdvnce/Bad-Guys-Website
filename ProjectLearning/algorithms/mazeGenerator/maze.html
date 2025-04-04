@@ -3,25 +3,44 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>A* visual</title>
 
         <link rel="stylesheet" href="mazeStyle.css">
         <script src = "mazeGenerator.js"></script>
     </head>
     <body>
-        <div style ="display: flex; justify-content: center; align-items: center; height: 100vh; max-height: 1500;">
-            <canvas id = "maze_field" width="1000" height="1000" > </canvas>
+        <div class = "navigation-buttons">
 
-            <div class = "buttons-container">
-                <input class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
-            
-                <button class = "maze_buttons"; onclick="canv.generateMaze()">update Grid</button>
-                <button class = "maze_buttons"; onclick="canv.goAStar({x: 0, y:0}, {x: 40, y:40})">start a*</button>
-                <button class = "maze_buttons"; onclick="sss">testtest</button>
-                <button class = "maze_buttons"; onclick="processData()">?</button>
+        </div>
+        <div class = "maze-workspace">
+            <div class = "maze-field">
+                <canvas id = "maze_field" width="1000" height="1000" > </canvas>
+            </div>
+
+            <div class = "maze-navigation"> 
+                <div class="text-output">
+                    <h1>A* algorithm</h1>
+                    <p>
+                        Поиск A* (произносится «А звезда» или «А стар», от англ. A star) — в информатике
+                        и математике, алгоритм поиска по первому наилучшему совпадению на графе, который
+                        находит маршрут с наименьшей стоимостью от одной вершины (начальной) к другой
+                        (целевой, конечной). 
+                        Порядок обхода вершин определяется эвристической функцией «расстояние + стоимость»
+                        (обычно обозначаемой как f(x)). Эта функция — сумма двух других: функции стоимости
+                        достижения рассматриваемой вершины (x) из начальной (обычно обозначается как g(x)
+                        и может быть как эвристической, так и нет), и функции эвристической оценки
+                        расстояния от рассматриваемой вершины к конечной (обозначается как h(x)).
+                    </p>
+                </div>
+                <div class = "buttons-container">
+                    <input  class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
+                    <button class = "maze_buttons"; onclick="canv=new Grid(parseInt(document.getElementById('size_input').value) || 21);canv.generateMaze()">update maze</button>
+                    <button class = "maze_buttons"; onclick="canv.cleanWay();canv.goAStar({x: 0, y:0}, {x: 40, y:40})">start a*</button>
+                    <button class = "maze_buttons"; onclick="canv.clean()">clean grid</button>
+                    <button class = "maze_buttons"; onclick="">?</button>
+                </div>
             </div>
         </div>
-        
         <script>            
             canv = new Grid(41);
             canv.draw();

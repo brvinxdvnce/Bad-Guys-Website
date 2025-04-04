@@ -61,7 +61,8 @@ class Cell {
 
 class Grid {
     constructor(cellCountInSide = 21) {
-        document.getElementById('size_input').value
+        if (cellCountInSide <= 0) cellCountInSide = 1;
+        cellCountInSide += cellCountInSide % 2 == 0;
         
         this.canvas = document.getElementById('maze_field');
         this.ctx = this.canvas.getContext('2d');
@@ -122,6 +123,23 @@ class Grid {
         }
         this.draw();
     }
+
+    cleanWay() {
+        for(let i = 0; i < this.cellCountInSide; i++) {
+            for(let j = 0; j < this.cellCountInSide; j++) {
+                this.grid[i][j] = this.grid[i][j] != 1? 0 : 1;
+            }
+        }
+    }
+    clean() {
+        for(let i = 0; i < this.cellCountInSide; i++) {
+            for(let j = 0; j < this.cellCountInSide; j++) {
+                this.grid[i][j] = 0;
+            }
+        }
+        this.draw();
+    }
+
 
     // Обработка клика
     handleClick(event) {
