@@ -4,25 +4,29 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
+
         <link rel="stylesheet" href="mazeStyle.css">
+        <script src = "mazeGenerator.js"></script>
     </head>
     <body>
-        <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style ="display: flex; justify-content: center; align-items: center; height: 100vh; max-height: 1500;">
             <canvas id = "maze_field" width="1000" height="1000" > </canvas>
 
-            <input type="number" id="size_input" placeholder="maze size:">
+            <div class = "buttons-container">
+                <input class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
             
-            <button onclick="processData()">regen maze</button>
-            <button onclick="processData()">start a*</button>
-            <button onclick="processData()">?</button>
-            <button onclick="processData()">?</button>
+                <button class = "maze_buttons"; onclick="canv.generateMaze()">update Grid</button>
+                <button class = "maze_buttons"; onclick="canv.goAStar({x: 0, y:0}, {x:10, y:10})">start a*</button>
+                <button class = "maze_buttons"; onclick="sss">testtest</button>
+                <button class = "maze_buttons"; onclick="processData()">?</button>
+            </div>
         </div>
         
-        <script src = "mazeGenerator.js"></script>
         <script>            
-            canv = new Grid(41);
+            canv = new Grid(21);
             canv.draw();
             canv.generateMaze();
         </script>
+
     </body>
 </html>

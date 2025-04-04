@@ -7,3 +7,14 @@ body {
 canvas {
     border: 10px solid black;
 }
+
+.maze_buttons {
+    background: #f855c2;
+    width:  100px;
+    height: 100px;
+    border: 2px solid #000000;
+}
+    
+.buttons-container {
+    flex-direction: column
+}
