@@ -102,7 +102,7 @@ class Grid {
                         this.ctx.fillStyle = "rgb(237, 138, 0)";
                         break;
                     case 6: //путь А*
-                        this.ctx.fillStyle = "rgb(85, 124, 216)";
+                        this.ctx.fillStyle = "rgb(238, 24, 0)";
                         break;
                 }
 
