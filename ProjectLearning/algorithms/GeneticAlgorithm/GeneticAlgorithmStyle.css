@@ -1,0 +1,22 @@
+canvas {
+    border: 20px solid #000;
+    cursor: crosshair;
+    background-image: url('gradient_fon_tsvet_185632_1280x720.jpg');
+    background-size: cover; 
+    background-position: center;  
+  }
+
+  .canvas-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+body {
+    background-image: url('gradient_sinij_tsvet_153524_1280x720.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    margin: 0; 
+    height: 100vh; 
+}
