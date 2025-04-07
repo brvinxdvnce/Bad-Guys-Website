@@ -5,18 +5,18 @@ class Point{
     }
 }
 
-function dictanceAllWay(array, matrixWay){
-    let dictanceWay = 0;
+function distanceAllWay(array, matrixWay){
+    let distanceWay = 0;
     for(let i = 0; i < array.length-1; i++){
-        dictanceWay += matrixWay[array[i]][array[i+1]];
+        distanceWay += matrixWay[array[i]][array[i+1]];
     }
-    return dictanceWay + matrixWay[array[array.length-1]][array[0]];
+    return distanceWay + matrixWay[array[array.length-1]][array[0]];
 }
 
 class Chromosome{
     constructor(way, matrixWay){
         this.way = way;
-        this.dictance = dictanceAllWay(way, matrixWay);
+        this.distance = distanceAllWay(way, matrixWay);
     }
 }
 
@@ -67,6 +67,8 @@ function uniqueChromosome(points, arrayPopulation, matrix){
 
 class Population{
     constructor(sizePopulation, points, matrix, percentMutation){
+        this.sizePopulation = sizePopulation;
+        this.points = points;
         this.matrix = matrix;
         this.percentMutation = percentMutation;
         
@@ -81,20 +83,38 @@ class Population{
         }
         else{
             let index1 = Math.floor(Math.random() * array.length);
-            // Исправлено: убрана переменная start, которая не определена
             let index2 = Math.floor(Math.random() * (array.length - index1)) + index1;
             [array[index1], array[index2]] = [array[index2], array[index1]];
             return array;
         }
     }
 
+    tournament(){
+        let tournament = [];
+        let tournamentSize = 6;
+        for(let i = 0; i < tournamentSize; i++){
+            tournament.push(this.arrayPopulation[Math.floor(Math.random() * this.arrayPopulation.length)]);
+        }
+        return tournament[0].way;
+    }
+
+    
+    genocide(){
+        let sizeGenocide = Math.floor(this.arrayPopulation.length / 2);
+        this.arrayPopulation.splice(-sizeGenocide);
+        for(let i = 0; i < sizeGenocide; i++){
+            this.arrayPopulation.push(uniqueChromosome(this.points, this.arrayPopulation, this.matrix));
+        }
+        this.arrayPopulation.sort((cromosome1, cromosome2) => cromosome1.distance - cromosome2.distance);
+    }
+
     crossover(){
         const arrayPopulationOldLength = this.arrayPopulation.length;
-        const parent1 = this.arrayPopulation[Math.floor(Math.random() * this.arrayPopulation.length)].way;
+        const parent1 = this.tournament();
         let parent2 = parent1;
 
         while(arraysEqual(parent1, parent2)){
-            parent2 = this.arrayPopulation[Math.floor(Math.random() * this.arrayPopulation.length)].way;
+            parent2 = this.tournament();
         } 
     
         const length = parent1.length;
@@ -135,7 +155,7 @@ class Population{
         this.arrayPopulation.push(child1, child2);
 
        
-        this.arrayPopulation.sort((cromosome1, cromosome2) => cromosome1.dictance - cromosome2.dictance);
+        this.arrayPopulation.sort((cromosome1, cromosome2) => cromosome1.distance - cromosome2.distance);
 
         this.arrayPopulation.splice(-(this.arrayPopulation.length - arrayPopulationOldLength));
     }
@@ -145,15 +165,30 @@ function geneticAlgorithm(points){
     var countPoint = points.length;
     const sizePopulation = 20; 
     const percentMutation = 0.4;
-    const countPopulation = 50;
-
+    const countPopulation = 100;
+    let countNoImproved = 0;
+    const notImproved = 5;
+    
     let matrix = makeMatrixDistance(countPoint, points);
-
+    
     let population = new Population(sizePopulation, points, matrix, percentMutation);
+    
+    let bestChromosome = population.arrayPopulation[0];
 
     for(let i = 0; i < countPopulation; i ++){
         population.crossover();
+        let newBestChromosome = population.arrayPopulation[0];
+        if(newBestChromosome.distance == bestChromosome.distance){
+            countNoImproved++;
+        }
+        bestChromosome = newBestChromosome;
+        if(countNoImproved >= notImproved){
+            population.genocide();
+        }
+        else{
+            countNoImproved = 0;
+        }
     }
 
-    return population.arrayPopulation[0];
+    return population.arrayPopulation[0].way;
 }
