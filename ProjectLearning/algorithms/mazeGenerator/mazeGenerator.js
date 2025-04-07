@@ -126,6 +126,40 @@ class Grid {
         this.draw();
     }
 
+    drawCell(i, j) {
+        
+        switch (this.grid[i][j]) {
+            case 0: //свободная зона
+                this.ctx.fillStyle = "rgb(255, 255, 255)";
+                break;
+            case 1: //стена
+                this.ctx.fillStyle = "rgb(0,0,0)";
+                break;
+            case 2: // free
+                this.ctx.fillStyle = "rgb(5, 177, 51)";
+                break;
+            case 3: //конец пути
+                this.ctx.fillStyle = "rgb(43, 224, 212)";
+                break;
+            case 4: //элементы, где прошелся алгоритм А*
+                this.ctx.fillStyle = "rgb(245, 208, 86)";
+                break;
+            case 5: //пограничные вершины для алгоритма А*
+                this.ctx.fillStyle = "rgb(237, 138, 0)";
+                break;
+            case 6: //путь А*
+                this.ctx.fillStyle = "rgb(238, 24, 0)";
+                break;
+        }
+
+        this.ctx.fillRect(
+            j * this.cellHeight,
+            i * this.cellWidth,
+            (j + 1) * this.cellHeight,
+            (i + 1) * this.cellWidth,);
+            
+    } 
+
     cleanWay() {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
@@ -140,9 +174,9 @@ class Grid {
                 this.grid[i][j] = 0;
             }
         }
+        this.endPoints = [];
         this.draw();
     }
-
 
     // Обработка клика
     handleClick(event) {
@@ -313,8 +347,6 @@ class Grid {
                 this.drawWay(way);
                 return;
             }
-
-            
             //смотрим на клетки по кресту и ищем подходящие (куда можно пойти дальше)
             for (const dir of directions) {
                 const x = currentNode.x + dir.dx;
@@ -329,14 +361,14 @@ class Grid {
 
                 // вычислить стоимости
                 neighbor.g = currentNode.g + 1;
-                neighbor.h = this.distance(neighbor, endPoint);
+                neighbor.h = this.distance({x: x, y: y}, endPoint);
                 neighbor.f = neighbor.g + neighbor.h;
 
                 // проверить случай, когда текущий элемент уже существует в очереди 
                 // новые данные могут прокладывать более короткий путь
                 const existingNode = queue.find(n => n.x === x && n.y === y);
                 if (existingNode) {
-                    if (neighbor.g < existingNode.g) {
+                    if (neighbor.f < existingNode.f) {
                         existingNode.g = neighbor.g;
                         existingNode.f = neighbor.f;
                         existingNode.parent = currentNode;

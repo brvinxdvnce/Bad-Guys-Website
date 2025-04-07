@@ -9,9 +9,8 @@
         <script src = "mazeGenerator.js"></script>
     </head>
     <body>
-        <div class = "navigation-buttons">
-
-        </div>
+        <div class = "navigation-buttons"></div>
+        
         <div class = "maze-workspace">
             <div class = "maze-field">
                 <canvas id = "maze_field" width="1000" height="1000" > </canvas>
@@ -33,6 +32,7 @@
                     </p>
                 </div>
                 <div class = "buttons-container">
+                    <button class = "maze_buttons"; onclick="window.location.href='../../index.html'">home</button>
                     <input  class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
                     <button class = "maze_buttons"; onclick="canv=new Grid(parseInt(document.getElementById('size_input').value) || 31);canv.generateMaze()">update maze</button>
                     <button class = "maze_buttons"; onclick="canv.cleanWay(); canv.goAStar()">start a*</button>
