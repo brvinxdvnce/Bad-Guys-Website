@@ -156,9 +156,8 @@ class Grid {
             this.endPoints.push({x: col, y: row});
             this.grid[row][col] = 3;
             while (this.endPoints.length > 2) {
-                this.grid[this.endPoints[0].x][this.endPoints[0].y] = 0;
+                this.grid[this.endPoints[0].y][this.endPoints[0].x] = 0;
                 this.endPoints.splice(0, 1);
-                this.draw();
             }
             this.draw();
         }
