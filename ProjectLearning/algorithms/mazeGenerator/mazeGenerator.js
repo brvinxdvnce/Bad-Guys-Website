@@ -77,6 +77,8 @@ class Grid {
         this.cellHeight = this.canvas.height /  cellCountInSide;
         
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
+
+        this.endPoints = [];
     }
 
     draw() {
@@ -90,11 +92,11 @@ class Grid {
                     case 1: //стена
                         this.ctx.fillStyle = "rgb(0,0,0)";
                         break;
-                    case 2: //старт пути
+                    case 2: // free
                         this.ctx.fillStyle = "rgb(5, 177, 51)";
                         break;
                     case 3: //конец пути
-                        this.ctx.fillStyle = "rgb(207, 44, 44)";
+                        this.ctx.fillStyle = "rgb(43, 224, 212)";
                         break;
                     case 4: //элементы, где прошелся алгоритм А*
                         this.ctx.fillStyle = "rgb(245, 208, 86)";
@@ -131,6 +133,7 @@ class Grid {
             }
         }
     }
+
     clean() {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
@@ -147,8 +150,22 @@ class Grid {
         const row = Math.floor((event.clientY - rect.top) / this.cellHeight);
         const col = Math.floor((event.clientX - rect.left) / this.cellHeight);
         
-        this.grid[row][col] = this.grid[row][col] == 1 ? 0 : 1;
-        this.draw();
+        let isChecked = document.getElementById('checkbox').checked;
+        
+        if (isChecked) {
+            this.endPoints.push({x: col, y: row});
+            this.grid[row][col] = 3;
+            while (this.endPoints.length > 2) {
+                this.grid[this.endPoints[0].x][this.endPoints[0].y] = 0;
+                this.endPoints.splice(0, 1);
+                this.draw();
+            }
+            this.draw();
+        }
+        else {
+            this.grid[row][col] = this.grid[row][col] == 1 ? 0 : 1;
+            this.draw();
+        }
     }
     
     //возвращает смежные вершины (пары индексов-координат)
@@ -253,7 +270,11 @@ class Grid {
         return Math.abs(node1.x - node2.x) + Math.abs(node1.y - node2.y);
     }
 
-    async goAStar(startPoint, endPoint) {
+    async goAStar() {
+        if (this.endPoints.length < 2) return;
+        let startPoint = this.endPoints[0];
+        let endPoint = this.endPoints[1];
+
         let startCell = new Cell(startPoint.x, startPoint.y);
         let endCell = new Cell(endPoint.x, endPoint.y);
         
@@ -261,7 +282,6 @@ class Grid {
         let queue = [];
         queue.push(startCell)
 
-        const visited = new Set();
         // направления движения (вверх, вниз, влево, вправо)
         const directions = [
             { dx:  0, dy: -1},
@@ -277,10 +297,9 @@ class Grid {
         // но финиша не было - лютый анлак, значит пути нет
 
         while (queue.length > 0 ) {
-            // найти узел с минимальной стоимостью в очереди -> изьять его -> отметить в visited (как строку!)
+            // найти узел с минимальной стоимостью в очереди -> изьять его -> отметить как посещенный
             let currentNode = getMinQuEl(queue);
             queue.splice(queue.indexOf(currentNode), 1);
-            visited.add(`${currentNode.x},${currentNode.y}`);
             this.grid[currentNode.y][currentNode.x] = 4;
             //this.draw();
 
@@ -296,6 +315,8 @@ class Grid {
                 return;
             }
 
+            
+            //смотрим на клетки по кресту и ищем подходящие (куда можно пойти дальше)
             for (const dir of directions) {
                 const x = currentNode.x + dir.dx;
                 const y = currentNode.y + dir.dy;
@@ -303,7 +324,8 @@ class Grid {
                 if (y < 0 || y >= this.cellCountInSide ||
                     x < 0 || x >= this.cellCountInSide) continue;
                 if (this.grid[y][x] === 1) continue;
-                if (visited.has(`${x},${y}`)) continue;
+                if (this.grid[y][x] === 4) continue;
+                if (this.grid[y][x] === 5) continue;
                 const neighbor = new Cell(x, y, currentNode);
 
                 // вычислить стоимости
@@ -311,7 +333,8 @@ class Grid {
                 neighbor.h = this.distance(neighbor, endPoint);
                 neighbor.f = neighbor.g + neighbor.h;
 
-                // проверить, есть ли сосед в queue с лучшим g
+                // проверить случай, когда текущий элемент уже существует в очереди 
+                // новые данные могут прокладывать более короткий путь
                 const existingNode = queue.find(n => n.x === x && n.y === y);
                 if (existingNode) {
                     if (neighbor.g < existingNode.g) {

@@ -34,10 +34,15 @@
                 </div>
                 <div class = "buttons-container">
                     <input  class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
-                    <button class = "maze_buttons"; onclick="canv=new Grid(parseInt(document.getElementById('size_input').value) || 21);canv.generateMaze()">update maze</button>
-                    <button class = "maze_buttons"; onclick="canv.cleanWay();canv.goAStar({x: 0, y:0}, {x: 40, y:40})">start a*</button>
+                    <button class = "maze_buttons"; onclick="canv=new Grid(parseInt(document.getElementById('size_input').value) || 31);canv.generateMaze()">update maze</button>
+                    <button class = "maze_buttons"; onclick="canv.cleanWay(); canv.goAStar()">start a*</button>
                     <button class = "maze_buttons"; onclick="canv.clean()">clean grid</button>
-                    <button class = "maze_buttons"; onclick="">?</button>
+                    <div class="container">
+                        <label class="switch" for="checkbox">
+                          <input type="checkbox" id="checkbox" />
+                          <div class="slider round"></div>
+                        </label>
+                      </div>
                 </div>
             </div>
         </div>
