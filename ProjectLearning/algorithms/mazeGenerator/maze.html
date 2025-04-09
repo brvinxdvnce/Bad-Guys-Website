@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class = "navigation-buttons"></div>
-        
+
         <div class = "maze-workspace">
             <div class = "maze-field">
                 <canvas id = "maze_field" width="1000" height="1000" > </canvas>
@@ -33,7 +33,7 @@
                 </div>
                 <div class = "buttons-container">
                     <button class = "maze_buttons"; onclick="window.location.href='../../index.html'">home</button>
-                    <input  class = "maze_buttons"; type="number" id="size_input" placeholder="maze size:">
+                    <input  class = "maze_buttons"; type="number" id="size_input" placeholder="maze size: (<250)">
                     <button class = "maze_buttons"; onclick="canv=new Grid(parseInt(document.getElementById('size_input').value) || 31);canv.generateMaze()">update maze</button>
                     <button class = "maze_buttons"; onclick="canv.cleanWay(); canv.goAStar()">start a*</button>
                     <button class = "maze_buttons"; onclick="canv.clean()">clean grid</button>
@@ -47,7 +47,7 @@
             </div>
         </div>
         <script>            
-            canv = new Grid(41);
+            canv = new Grid(31);
             canv.draw();
             canv.generateMaze();
         </script>
