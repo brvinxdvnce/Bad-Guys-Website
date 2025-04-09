@@ -1,0 +1,55 @@
+const points = [];
+
+function clickTable(){
+    const $tableNode = document.querySelector("#table");
+    const ctx = $tableNode.getContext("2d");
+    $tableNode.addEventListener(`click`, (event) => {
+        if (points.length >= 30) {
+            alert('Превышено количество точек: 30');
+            return;
+        }
+      const rect = $tableNode.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      points.push({ x, y });
+        ctx.fillStyle = "black";
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, Math.PI * 2);
+        ctx.fill();
+      console.log("Точка добавлена:", { x, y });
+    })
+}
+
+function startAlgorithm(){
+    const $startButton = document.querySelector("#start");
+    const $tableNode = document.querySelector("#table");
+    const ctx = $tableNode.getContext("2d");
+    $startButton.addEventListener(`click`, (event) => {
+        if (points.length == 0 || points.length == 1 ){
+            alert('Нужно больше точек');
+            return;
+        }
+        console.log("Алгоритм запущен")
+        const path = geneticAlgorithm(points);
+        for(let i = 0; i < path.length-1; i++){
+            let startPoint = path[i];
+            let endPoint = path[i+1];
+            ctx.moveTo(startPoint.x, startPoint.y);
+            ctx.lineTo(endPoint.x, endPoint.y);
+            ctx.stroke();
+            console.log("Линия добавлена");
+        }
+
+    })
+}
+
+function clearAlgorithm(){
+    const $clearButton = document.querySelector("#clear");
+    const $tableNode = document.querySelector("#table");
+    const ctx = $tableNode.getContext("2d");
+    $clearButton.addEventListener(`click`, (event) => {
+        ctx.clearRect(0, 0, $tableNode.width, $tableNode.height);
+        console.log("Все очищено");
+        points.splice(0, points.length);
+    })
+}
