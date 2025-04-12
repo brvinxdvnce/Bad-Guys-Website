@@ -62,6 +62,8 @@ class Cell {
 class Grid {
     constructor(cellCountInSide = 21) {
         if (cellCountInSide <= 0) cellCountInSide = 1;
+        if (cellCountInSide > 250) cellCountInSide = 21;
+
         cellCountInSide += cellCountInSide % 2 == 0;
         
         this.canvas = document.getElementById('maze_field');
@@ -81,7 +83,7 @@ class Grid {
         this.endPoints = [];
     }
 
-    draw() {
+    draw () {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
 
@@ -118,7 +120,7 @@ class Grid {
         }
     }
 
-    drawWay(way) {
+    drawWay (way) {
         let cell;
         for (cell of way) {
             this.grid[cell.y][cell.x] = 6;
@@ -126,7 +128,7 @@ class Grid {
         this.draw();
     }
 
-    drawCell(i, j) {
+    drawCell (i, j) {
         
         switch (this.grid[i][j]) {
             case 0: //свободная зона
@@ -160,7 +162,7 @@ class Grid {
             
     } 
 
-    cleanWay() {
+    cleanWay () {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
                 this.grid[i][j] = this.grid[i][j] != 1? 0 : 1;
@@ -168,7 +170,7 @@ class Grid {
         }
     }
 
-    clean() {
+    clean () {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
                 this.grid[i][j] = 0;
@@ -179,7 +181,7 @@ class Grid {
     }
 
     // Обработка клика
-    handleClick(event) {
+    handleClick (event) {
         const rect = this.canvas.getBoundingClientRect();
         const row = Math.floor((event.clientY - rect.top) / this.cellHeight);
         const col = Math.floor((event.clientX - rect.left) / this.cellHeight);
@@ -230,7 +232,7 @@ class Grid {
 
     generateMaze() {
         // для норм отображения сторона либиринта должна быть нечетной длины, иначе
-        //получается некрасиво
+        // получается некрасиво
         this.grid = createSquareMatrix(this.cellCountInSide, 1);
         let startX = getRandomInt(0, this.cellCountInSide);
         startX += startX % 2;
