@@ -10,19 +10,18 @@
     <link rel="stylesheet" href="GeneticAlgorithmStyle.css">
 </head>
 <body>
-    <div id = "app" class="container text-center">
-        <div id = "panel" class="p-2 mb-2 bg-secondary text-white">
-            <a href ="ProjectLearning\index.html">Вернуться на главную страницу</a>
-        </div>
-        <div id ="site" class="content">
-            <div class="row"></div>
-            <h1>Генетический алгоритм</h1>
-            <h2>Нарисуйте точки внутри поля</h2>
+    <div id="app" class="container text-center">
+        <div id="site" class="content">
             <div class="canvas-container">
-                <canvas id="table" width="800" height="500" style="border:3px solid #000;"></canvas>
-                <div id = buttons class ="p-3 mb-2 text-white">
+                <canvas id="table" width="800" height="600" style="border:3px solid #0dcaf0;"></canvas>
+            </div>
+            <div id="buttons" class="p-3 mb-2 text-white">
+                <h1 style="color: whitesmoke;">Генетический алгоритм</h1>
+                <h2 style="color: whitesmoke;">Генетический алгоритм для задачи коммивояжера ищет кратчайший путь между городами, имитируя эволюцию. Он начинает со случайных маршрутов. В каждом поколении оценивается длина маршрутов (чем короче, тем лучше). Лучшие маршруты "размножаются", обмениваясь частями ("скрещивание"), и случайно немного изменяются ("мутация"). Этот процесс повторяется, постепенно улучшая маршруты, пока не будет найден достаточно короткий путь.</h2>
+                <div id="button-group">
                     <div id="start" class="btn btn-primary btn-lg active">Начать</div>
                     <div id="clear" class="btn btn-secondary btn-lg active">Очистить</div>
+                    <a href="../../index.html" class="fixed-button">Назад</a>
                 </div>
             </div>
         </div>

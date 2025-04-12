@@ -5,7 +5,7 @@ class Point{
     }
 }
 
-function distanceAllWay(array, matrixWay){
+function distanceAllWay(array){
     let distanceWay = 0;
     for(let i = 0; i < array.length-1; i++){
         distanceWay += distance(array[i],array[i+1]);
@@ -14,30 +14,15 @@ function distanceAllWay(array, matrixWay){
 }
 
 class Chromosome{
-    constructor(way, matrixWay){
+    constructor(way){
         this.way = way; // массив точек
-        this.distance = distanceAllWay(way, matrixWay); // дистанция пути комивояжора
+        this.distance = distanceAllWay(way); // дистанция пути комивояжора
     }
 }
 
 // дистанция между точками
 function distance(point1, point2){
     return Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2));
-}
-
-// создает матрицу расстояний
-function makeMatrixDistance(length, pointsArray){                
-    let matrix = Array(length);
-    for(let i = 0; i < length; i++){
-        matrix[i] = Array(length);
-    }
-
-    for(let i = 0; i < length; i++){
-        for(let j = 0; j < length; j++){
-            matrix[i][j] = distance(pointsArray[i], pointsArray[j]);
-        }
-    }
-    return matrix;
 }
 
 // сравнение двух массивов
@@ -55,13 +40,13 @@ function shuffle(array) {
 }
 
 // создание уникальной хромосомы
-function uniqueChromosome(points, arrayPopulation, matrix){
+function uniqueChromosome(points, arrayPopulation){
     // Создадим первую хромосому
-    var newChrom = new Chromosome(shuffle(points.slice()), matrix);
+    var newChrom = new Chromosome(shuffle(points.slice()));
     // Пока в популяции есть хромосома с таким же путем, генерируем новую
     let uniqueChromosomeCount = 0; // количество уникальных хромосом
     while(arrayPopulation.some(chromosome => arraysEqual(chromosome.way, newChrom.way))){
-        newChrom = new Chromosome(shuffle(points.slice()), matrix);
+        newChrom = new Chromosome(shuffle(points.slice()));
         uniqueChromosomeCount++;
         // если невозможно создать новую комбинацию, добавляем то что получилось (копию)
         if(uniqueChromosomeCount > 5){
@@ -72,15 +57,14 @@ function uniqueChromosome(points, arrayPopulation, matrix){
 }
 
 class Population{
-    constructor(sizePopulation, points, matrix, percentMutation, countChild){
+    constructor(sizePopulation, points, percentMutation, countChild){
         this.sizePopulation = sizePopulation; // размер популяции
         this.countChild = countChild; // сколько особей получится в результате одного скрещивания
         this.points = points;
-        this.matrix = matrix;
         this.percentMutation = percentMutation;
         let arrayPopulation = []; // список всех особей в популяции(массив Chromosome)
         for (let i = 0; i < sizePopulation; i++) {
-            arrayPopulation.push(uniqueChromosome(points, arrayPopulation, matrix));
+            arrayPopulation.push(uniqueChromosome(points, arrayPopulation));
         }
         arrayPopulation.sort((c1, c2) => c1.distance - c2.distance);
         this.arrayPopulation = arrayPopulation;
@@ -118,7 +102,7 @@ class Population{
         let sizeGenocide = Math.floor(this.arrayPopulation.length / 10);
         this.arrayPopulation.splice(-sizeGenocide); // удаляем с конца, так как самые непригодные будут в конце массива после отсортировки
         for(let i = 0; i < sizeGenocide; i++){
-            this.arrayPopulation.push(uniqueChromosome(this.points, this.arrayPopulation, this.matrix));
+            this.arrayPopulation.push(uniqueChromosome(this.points, this.arrayPopulation));
         }
         this.arrayPopulation.sort((cromosome1, cromosome2) => cromosome1.distance - cromosome2.distance);
     }
@@ -127,7 +111,7 @@ class Population{
     crossover(){
         const eliteCount = 15; // размер элитной группы
         // элитная группа, которая содержит лучших особей, которых нельзя подвергать изменениям
-        const elites = this.arrayPopulation.slice(0, eliteCount).map(chrom => new Chromosome(chrom.way.slice(), this.matrix));
+        const elites = this.arrayPopulation.slice(0, eliteCount).map(chrom => new Chromosome(chrom.way.slice()));
 
         const arrayPopulationOldLength = this.arrayPopulation.length;
 
@@ -136,11 +120,12 @@ class Population{
             // определяем первого родителя методом турнира
             const parent1 = this.makeTournament();
             let parent2 = parent1;
-            
-            // генерируем второго пока он не будет похож на первого
-            while(arraysEqual(parent1, parent2)){
+            let attempts = 0;
+            const maxAttempts = 10;
+            while(arraysEqual(parent1, parent2) && attempts < maxAttempts){
                 parent2 = this.makeTournament();
-            } 
+                attempts++;
+                }
         
             const length = parent1.length;
             
@@ -178,8 +163,8 @@ class Population{
             }
     
             //создаем дочерние особи на основе полученных массивов
-            let child1 = new Chromosome(this.mutation(childWay1, this.percentMutation), this.matrix);
-            let child2 = new Chromosome(this.mutation(childWay2, this.percentMutation), this.matrix);
+            let child1 = new Chromosome(this.mutation(childWay1, this.percentMutation));
+            let child2 = new Chromosome(this.mutation(childWay2, this.percentMutation));
     
             this.arrayPopulation.push(child1, child2);
         }
@@ -187,7 +172,7 @@ class Population{
         this.arrayPopulation.sort((cromosome1, cromosome2) => cromosome1.distance - cromosome2.distance);
         
         //убираем последних менее приспособленных особей, оставляя место для элиты
-         this.arrayPopulation.splice(this.sizePopulation - this.eliteCount);
+         this.arrayPopulation.splice(this.sizePopulation - eliteCount);
 
          // вставляем нашу элиту
          this.arrayPopulation = elites.concat(this.arrayPopulation);
@@ -197,43 +182,44 @@ class Population{
     }
 }
 
-function geneticAlgorithm(points){
-    var countPoint = points.length;
-    const sizePopulation = 100; // размер популяции
+async function geneticAlgorithm(points, drawPath){
+
+    const sizePopulation = 30; // размер популяции
     const percentMutation = 0.4; // процент мутации
-    const countPopulation = 10000; // количество изменения популяции
-    const countChild = 30; // количество скрещиваний на каждой итерации
+    const countPopulation = 500; // количество изменения популяции
+    const countChild = 10; // количество скрещиваний на каждой итерации
     let countNoImproved = 0; // счетчик количества итераций без изменения
-    const notImproved = 20; // сколько итераций может быть без изменений
+    const notImproved = 30; // сколько итераций может быть без изменений
     
-    let matrix = makeMatrixDistance(countPoint, points); // матрица расстояний
-    
-    let population = new Population(sizePopulation, points, matrix, percentMutation, countChild); // создаем популяцию
+    let population = new Population(sizePopulation, points, percentMutation, countChild); // создаем популяцию
     
     let bestChromosome = population.arrayPopulation[0]; // устанавливаем первое значение лучшей особи
 
+    if(drawPath){
+        drawPath(bestChromosome.way);
+    }
 
     // проводим развитие популяции
-    for(let i = 0; i < countPopulation; i ++){
+    for(let i = 0; i < countPopulation; i++){
         population.crossover();
         let newBestChromosome = population.arrayPopulation[0];
         // если старая особь до сих пор лучше новой увеличиваем счетчик
-        if(newBestChromosome.distance >= bestChromosome.distance){
+        if(newBestChromosome.distance < bestChromosome.distance){
+            bestChromosome = newBestChromosome;
+            countNoImproved = 0;
+            if(drawPath){
+                drawPath(bestChromosome.way);
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        } else {
             countNoImproved++;
         }
-        else{
-            bestChromosome = newBestChromosome;
-        }
+
         // если количество итераций без изменений достигло максимума, начинаем перезагрузку популяции
         if(countNoImproved >= notImproved){
             population.genocide();
-        }
-        else{
             countNoImproved = 0;
         }
     }
-
-
-    population.arrayPopulation[0].way.push( population.arrayPopulation[0].way[0]);
-    return population.arrayPopulation[0].way;
+    return;
 }

@@ -20,3 +20,41 @@ body {
     margin: 0; 
     height: 100vh; 
 }
+
+#start {
+  background-color: #28a745;
+  color: #fff;
+}
+#start:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+#start:active {
+  transform: scale(0.97);
+}
+
+h1 {
+  font-size: 18px;
+  color: #f0f0f0;
+  line-height: 1.6;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  background-color: rgba(255, 255, 255, 0.05); /* полупрозрачная подложка */
+  padding: 10px 15px;
+  border-left: 4px solid #0dcaf0; /* голубая полоса слева */
+  border-radius: 6px;
+}
+
+
+#clear {
+  background-color: #dc3545;
+  color: #fff;
+  margin-left: 20px;
+}
+#clear:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+#clear:active {
+  transform: scale(0.97);
+}
