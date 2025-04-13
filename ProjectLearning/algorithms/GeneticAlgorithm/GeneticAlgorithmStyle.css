@@ -60,11 +60,16 @@ h1 {
 }
 
 h2 {
-  color: #f8f9fa; 
+  color: #787879; 
+  background-color: #242424;
+  border-radius: 10px;
+  padding: 15px 25px;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px); 
   font-size: 20px; 
   font-weight: normal; 
   margin-top: 15px; 
-  margin-bottom: 70px; 
+  margin-bottom: 40px; 
   text-align: center; 
   opacity: 0.8; 
   text-shadow: 0.5px 0.5px 1px #00000055; 

@@ -1,60 +1,146 @@
-canvas {
-    border: 20px solid #000;
-    cursor: crosshair;
-    background-image: url('gradient_fon_tsvet_185632_1280x720.jpg');
-    background-size: cover; 
-    background-position: center;  
-  }
-
-  .canvas-container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    gap: 10px; 
+.content {
+  display: flex;
+  align-items: flex-start; 
+  justify-content: space-between; 
 }
 
+canvas {
+  border: 20px solid #000;
+  cursor: crosshair;
+  background-image: url('gradient_fon_tsvet_185632_1280x720.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.canvas-container {
+  flex: 1;
+  max-width: 60%;
+  margin-right: 20px; 
+  margin-bottom: 20px; 
+}
+
+
+#app {
+  padding: 20px;
+  margin-top: 40px;
+}
+
+#panel {
+  background-color: #6c757d;
+  padding: 10px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+
 body {
-    background-image: url('gradient_sinij_tsvet_153524_1280x720.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    margin: 0; 
-    height: 100vh; 
+  background-image: url("de6fd50686.jpg");
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  height: 100vh;
+}
+#buttons {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+h1 {
+  font-size: 36px;
+  margin: 0 0 20px 0; 
+  height: auto;
+  color: #ffffff;
+  background-color: #af660d;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #00000055;
+  display: block; 
+}
+
+h2 {
+  color: #787879; 
+  background-color: #242424;
+  border-radius: 10px;
+  padding: 15px 25px;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px); 
+  font-size: 20px; 
+  font-weight: normal; 
+  margin-top: 15px; 
+  margin-bottom: 40px; 
+  text-align: center; 
+  opacity: 0.8; 
+  text-shadow: 0.5px 0.5px 1px #00000055; 
+  word-wrap: break-word;
+
+}
+
+
+
+#button-group {
+  display: flex; 
+  align-items: center; 
+}
+
+#start, #clear {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin-left: 10px; 
 }
 
 #start {
   background-color: #28a745;
   color: #fff;
+  margin-left: 0; 
+  margin-right: 175px;
 }
+
 #start:hover {
   background-color: #218838;
   transform: scale(1.05);
 }
+
 #start:active {
   transform: scale(0.97);
 }
 
-h1 {
-  font-size: 18px;
-  color: #f0f0f0;
-  line-height: 1.6;
-  margin-top: 15px;
-  margin-bottom: 30px;
-  background-color: rgba(255, 255, 255, 0.05); /* полупрозрачная подложка */
-  padding: 10px 15px;
-  border-left: 4px solid #0dcaf0; /* голубая полоса слева */
-  border-radius: 6px;
-}
-
-
 #clear {
   background-color: #dc3545;
   color: #fff;
-  margin-left: 20px;
 }
+
 #clear:hover {
   background-color: #c82333;
   transform: scale(1.05);
 }
+
 #clear:active {
   transform: scale(0.97);
+}
+
+.fixed-button {
+  display: inline-block; 
+  padding: 20px 30px;
+  background-color: #323437; 
+  color: white; 
+  text-decoration: none;
+  border-radius: 20px; 
+  position: fixed; 
+  bottom: 20px;
+  right: 20px; 
+  z-index: 1000; 
+  font-size: 24px;
+  transition: background-color 0.3s ease; 
+}
+
+.fixed-button:hover {
+  background-color: #a3adb7; 
 }

@@ -11,18 +11,18 @@
 </head>
 <body>
     <div id = "app" class="container text-center">
-        <div id = "panel" class="p-2 mb-2 bg-secondary text-white">
-            <a href ="../../index.html">Вернуться на главную страницу</a>
-        </div>
         <div id ="site" class="content">
-            <div class="row"></div>
-            <h1>Муравьиный алгоритм</h1>
-            <h2>Нарисуйте точки внутри поля</h2>
             <div class="canvas-container">
-                <canvas id="table" width="800" height="500" style="border:3px solid #000;"></canvas>
-                <div id = buttons class ="p-3 mb-2 text-white">
+                <canvas id="table" width="800" height="600" style="border:3px solid #000000;"></canvas>
+            </div>
+            <div id="buttons" class="p-3 mb-2 text-white">
+                <h1 style="color: whitesmoke;">Муравьиный алгоритм</h1>
+                <h2 style="color: whitesmoke;">
+                    Муравьиный алгоритм решает задачу коммивояжера, подражая муравьям в поиске пищи. Муравьи случайно бродят между городами, оставляя феромоновые следы. Более короткие и популярные пути накапливают больше феромона, привлекая других муравьев. Со временем эта коллективная обратная связь приводит к нахождению оптимального или близкого к оптимальному маршрута, соединяющего все города.</h2>
+                <div id="button-group">
                     <div id="start" class="btn btn-primary btn-lg active">Начать</div>
                     <div id="clear" class="btn btn-secondary btn-lg active">Очистить</div>
+                    <a href="../../index.html" class="fixed-button">Назад</a>
                 </div>
             </div>
         </div>
