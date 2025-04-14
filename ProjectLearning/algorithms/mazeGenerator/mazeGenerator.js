@@ -90,7 +90,6 @@ class Grid {
     draw () {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
-
                 switch (this.grid[i][j]) {
                     case 0: //свободная зона
                         this.ctx.fillStyle = "rgb(255, 255, 255)";
@@ -118,16 +117,17 @@ class Grid {
                 this.ctx.fillRect(
                     j * this.cellHeight,
                     i * this.cellWidth,
-                    (j + 1) * this.cellHeight,
-                    (i + 1) * this.cellWidth,);
+                    this.cellHeight,
+                    this.cellWidth );
             }
         }
     }
 
     async drawWay (way) {
         let cell;
-        for (let i = 1; i < way.length - 1; ++i)
-        for (cell of way) {
+        console.log("start draw a way");
+        for (let i = 0; i < way.length; ++i) {
+            cell = way[i];
             this.grid[cell.y][cell.x] = 6;
             this.drawCell(cell.y, cell.x);
             await sleep(60);
@@ -242,7 +242,6 @@ class Grid {
         let startY = getRandomInt(0, this.cellCountInSide);
         startY += startY % 2;
         this.grid[startX][startY] = 0;
-        this.draw();
         
         let queue = [];
         let inQueue = createSquareMatrix(this.cellCountInSide, 0);
@@ -299,6 +298,7 @@ class Grid {
             addToQueue(x + 2, y);
         
         }
+        console.log("maze has been genered");
         this.draw();
     }
 
