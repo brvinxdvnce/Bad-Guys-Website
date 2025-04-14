@@ -1,3 +1,7 @@
+function sleep(ms) {
+    return new Promise(pass => setTimeout(pass, ms));
+}
+
 function getMinQuEl(q) {
     if (!q) return;
     let minElem = q[0];
@@ -7,7 +11,7 @@ function getMinQuEl(q) {
 
 function getRandomInt(min, max) {
     if (min == max) return min;
-    return Math.floor(1/Math.random() % (max - min) + min);
+    return Math.floor(max*Math.random() % (max - min) + min);
 }
 
 function createSquareMatrix(size, value = 0) {
@@ -53,7 +57,7 @@ class Cell {
       this.x = x;
       this.y = y;
       this.parent = parent;
-      this.g = 0; // Манхэттенское расстояние от старта
+      this.g = parent ? parent.g + 1 : 0; // Манхэттенское расстояние от старта
       this.h = 0; // Манхэттенское расстояние до финиша 
       this.f = 0; // Общая стоимость (g + h)
     }
@@ -120,16 +124,17 @@ class Grid {
         }
     }
 
-    drawWay (way) {
+    async drawWay (way) {
         let cell;
+        for (let i = 1; i < way.length - 1; ++i)
         for (cell of way) {
             this.grid[cell.y][cell.x] = 6;
+            this.drawCell(cell.y, cell.x);
+            await sleep(60);
         }
-        this.draw();
     }
 
     drawCell (i, j) {
-        
         switch (this.grid[i][j]) {
             case 0: //свободная зона
                 this.ctx.fillStyle = "rgb(255, 255, 255)";
@@ -153,13 +158,11 @@ class Grid {
                 this.ctx.fillStyle = "rgb(238, 24, 0)";
                 break;
         }
-
         this.ctx.fillRect(
             j * this.cellHeight,
             i * this.cellWidth,
-            (j + 1) * this.cellHeight,
-            (i + 1) * this.cellWidth,);
-            
+            this.cellHeight,
+            this.cellWidth );
     } 
 
     cleanWay () {
@@ -301,7 +304,7 @@ class Grid {
 
     //манхэттенское расстояние, по сути, длина треугольника, где start и end - это вершины
     // на концах гипотенузы прямоугольного треугольника, а расстояние - длина катетов
-    distance(node1, node2) {
+    manhattanDistance(node1, node2) {
         return Math.abs(node1.x - node2.x) + Math.abs(node1.y - node2.y);
     }
 
@@ -315,7 +318,7 @@ class Grid {
         
         // очередь - все пограничные вершины. на поле она немного напоминает очередь в обходе в ширину
         let queue = [];
-        queue.push(startCell)
+        queue.push(startCell);
 
         // направления движения (вверх, вниз, влево, вправо)
         const directions = [
@@ -336,6 +339,8 @@ class Grid {
             let currentNode = getMinQuEl(queue);
             queue.splice(queue.indexOf(currentNode), 1);
             this.grid[currentNode.y][currentNode.x] = 4;
+            this.drawCell(currentNode.y, currentNode.x);
+            await sleep(10);
             //this.draw();
 
             // проверка достижения цели
@@ -363,13 +368,13 @@ class Grid {
 
                 // вычислить стоимости
                 neighbor.g = currentNode.g + 1;
-                neighbor.h = this.distance({x: x, y: y}, endPoint);
+                neighbor.h = this.manhattanDistance({x: x, y: y}, endPoint);
                 neighbor.f = neighbor.g + neighbor.h;
 
                 // проверить случай, когда текущий элемент уже существует в очереди 
                 // новые данные могут прокладывать более короткий путь
                 const existingNode = queue.find(n => n.x === x && n.y === y);
-                if (existingNode) {
+                if (existingNode && this.grid[y][x] !== 4) {
                     if (neighbor.f < existingNode.f) {
                         existingNode.g = neighbor.g;
                         existingNode.f = neighbor.f;
@@ -378,10 +383,11 @@ class Grid {
                 } else {
                     queue.push(neighbor);
                     this.grid[neighbor.y][neighbor.x] = 5;
+                    this.drawCell(neighbor.y, neighbor.x);
+                    await sleep(10);
                 }
             }
         }
-        this.draw();
         return; // Путь не найден
         }
     }
