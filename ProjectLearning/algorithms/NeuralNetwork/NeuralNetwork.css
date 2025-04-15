@@ -1,7 +1,24 @@
 body {
-    background-color: rgb(172, 248, 248);
+    background-color: rgb(192, 162, 162);
+    margin: 0;
+    display: grid;
+    justify-content: center;
+    overflow:  hidden;
 }
 
 canvas {
     border: 10px solid black;
+}
+
+.net-workspace{
+    position: relative;
+    opacity: 10;
+    width: 1200px;
+    height: 1000px;
+    grid-template-columns: 1000px 500px;
+    border-radius: 0.8rem;
+    gap: 20px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
 }

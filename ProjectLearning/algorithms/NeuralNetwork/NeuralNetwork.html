@@ -6,13 +6,28 @@
         <title>Document</title>
 
         <link rel="stylesheet" href="NeuralNetwork.css">
+
+        <script src = "NeuralNetwork.js"></script>
+        <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+        <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
     </head>
     <body>
+        <div class = "net-workspace">
+            <div class = "dwaring-board">
+                <canvas id = "dwaring-board"></canvas>
+            </div>
+            
+
+            <img src = "numbers_images/default.png"/>
+            <div class = "buttons-container">
+                <button class = "maze_buttons"; onclick="canv.clearField();">clear it</button>   
+                <button class = "maze_buttons"; onclick="canv.guessTheNumber();">magic</button> 
+            </div>
+        </div>
         
-        <canvas id = "canvasPainting"></canvas>
-        <script src = "NeuralNetwork.js"></script>
         <script>
-            let painting = new Paint();
+            let canv = new Paint();
+            canv.clearField();
         </script>
     </body>
 </html>

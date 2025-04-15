@@ -4,7 +4,7 @@ function createSquareMatrix(size, value = 0) {
 
 class Paint {
     constructor(cellCountInSide = 50) {
-        this.canvas = document.getElementById('canvasPainting');
+        this.canvas = document.getElementById('dwaring-board');
         this.ctx = this.canvas.getContext('2d');
 
         this.canvas.width  = 750;
@@ -16,100 +16,57 @@ class Paint {
         this.cellWidth = this.canvas.width /  cellCountInSide;
         this.cellHeight = this.canvas.height /  cellCountInSide;
 
-        this.isDrawing = 0;
+        this.isDrawing = false;
+        this.lineWidth = 1;
 
-        this.canvas.addEventListener('mousedown', (e) => this.changeMouseState(e));
-        this.canvas.addEventListener('mouseup', (e) => this.changeMouseState(e));
-        this.canvas.addEventListener('mousemove', (e) => this.handleMove(e));
+        this.images = []; 
+
+        this.canvas.addEventListener('mousedown', (e) => {
+           this.isDrawing = true;
+        });
+        
+        this.canvas.addEventListener('mouseup'  , (e) => {
+            this.isDrawing = false;
+        });
+
+        this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+        
+        this.canvas.addEventListener('click'    , (e) => {
+            this.isDrawing = true; this.draw(e); this.isDrawing=false;
+        });
     }
 
-    draw() {
-        for(let i = 0; i < this.cellCountInSide; i++) {
-            for(let j = 0; j < this.cellCountInSide; j++) {
 
-                this.ctx.fillStyle = this.grid[i][j] ? '#000000' : '#ffffff';
+    draw (event) {
+    if (!this.isDrawing) return;
+    const rect = this.canvas.getBoundingClientRect();
+    const row = Math.floor((event.clientY - rect.top) / this.cellHeight);
+    const col = Math.floor((event.clientX - rect.left) / this.cellHeight);
 
-                this.ctx.fillRect(
-                    j * this.cellHeight,
-                    i * this.cellWidth,
-                    (j + 1) * this.cellHeight,
-                    (i + 1) * this.cellWidth,);
+    for (let i = row-1; i <= row+1; ++i) {
+        for (let j = col-1; j <= col+1; ++j) {
+            if (i >= 0 && j >= 0 &&
+                i < this.cellCountInSide &&
+                j < this.cellCountInSide) {
+                    this.grid[row][col] = 1;
+                    this.ctx.fillStyle = '#000000';
+                    this.ctx.fillRect(
+                        j * this.cellHeight,
+                        i * this.cellWidth,
+                        this.cellHeight,
+                        this.cellWidth,);
+                }
             }
         }
     }
 
-    changeMouseState(event) {
-        this.isDrawing = isDrawing ? false : true; 
+    clearField () {
+        this.grid = createSquareMatrix(50, 0);
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    // Обработка клика
-    handleMove(event) {
-        //if (!this.isDrawing) return;
-        const rect = this.canvas.getBoundingClientRect();
-        const row = Math.floor((event.clientY) / this.cellHeight);
-        const col = Math.floor((event.clientX) / this.cellHeight);
-        
-        
-        this.grid[row][col] = 1;
-        
-        this.draw();
+    guessTheNumber () {
+
     }
 }
-
-
-
-
-
-window.onload = function () {
-    // Specifications
-    var mouseX = 0;
-    var mouseY = 0;
-    context.strokeStyle = 'black'; // initial brush color
-    context.lineWidth = 1; // initial brush width
-    var isDrawing = false;
-  
-    // Mouse Down Event
-    canvas.addEventListener('mousedown', function(event) {
-      setMouseCoordinates(event);
-      isDrawing = true;
-  
-      // Start Drawing
-      context.beginPath();
-      context.moveTo(mouseX, mouseY);
-    });
-  
-    // Mouse Move Event
-    canvas.addEventListener('mousemove', function(event) {
-      setMouseCoordinates(event);
-  
-      if(isDrawing){
-        context.lineTo(mouseX, mouseY);
-        context.stroke();
-      }
-    });
-  
-    // Mouse Up Event
-    canvas.addEventListener('mouseup', function(event) {
-      setMouseCoordinates(event);
-      isDrawing = false;
-    });
-  
-    // Handle Mouse Coordinates
-    function setMouseCoordinates(event) {
-      mouseX = event.clientX - boundings.left;
-      mouseY = event.clientY - boundings.top;
-    }
-  
-    // Handle Save Button
-    var saveButton = document.getElementById('save');
-  
-    saveButton.addEventListener('click', function() {
-      var imageName = prompt('Please enter image name');
-      var canvasDataURL = canvas.toDataURL();
-      var a = document.createElement('a');
-      a.href = canvasDataURL;
-      a.download = imageName || 'drawing';
-      a.click();
-    });
-  };
-  

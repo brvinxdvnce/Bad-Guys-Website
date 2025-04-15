@@ -168,9 +168,10 @@ class Grid {
     cleanWay () {
         for(let i = 0; i < this.cellCountInSide; i++) {
             for(let j = 0; j < this.cellCountInSide; j++) {
-                this.grid[i][j] = this.grid[i][j] != 1? 0 : 1;
+                this.grid[i][j] = (this.grid[i][j] != 1 && this.grid[i][j] != 3)? 0 : this.grid[i][j];
             }
         }
+        this.draw()
     }
 
     clean () {
@@ -316,6 +317,7 @@ class Grid {
         let startCell = new Cell(startPoint.x, startPoint.y);
         let endCell = new Cell(endPoint.x, endPoint.y);
         
+
         // очередь - все пограничные вершины. на поле она немного напоминает очередь в обходе в ширину
         let queue = [];
         queue.push(startCell);
