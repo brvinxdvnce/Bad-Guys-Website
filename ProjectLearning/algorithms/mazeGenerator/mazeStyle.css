@@ -31,6 +31,11 @@ body {
     display: grid;
 }
 
+.text-output {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: large;
+}
+
 canvas {
     border: 10px solid black;
 }
@@ -40,6 +45,15 @@ canvas {
     width:  450px;
     height: 100px;
     border: 2px solid #000000;
+
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: large;
+
+    &:hover {
+      background: #671a13;
+      transform: translateY(2px);
+  }
 }
 
 .buttons-container {
@@ -48,15 +62,8 @@ canvas {
     gap: 5px;
 }
 
-.maze_buttons {
-    cursor: pointer;
-}
 
 
-button:hover {
-    background: #671a13;
-    transform: translateY(2px);
-}
 
 
 

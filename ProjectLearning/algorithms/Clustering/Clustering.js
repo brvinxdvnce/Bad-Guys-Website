@@ -40,7 +40,7 @@ class DataClusters {
 
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
 
-        this.ctx.fillStyle = "rgb(176, 176, 176)";
+        this.ctx.fillStyle = "rgb(27, 27, 27)";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
     
@@ -57,7 +57,7 @@ class DataClusters {
 
     //
     drawAll () {
-        this.ctx.fillStyle = "rgb(176, 176, 176)";
+        this.ctx.fillStyle = "rgb(27, 27, 27)";
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         for (let i = 0; i < this.points.length; ++i) {
@@ -67,7 +67,7 @@ class DataClusters {
 
     //
     drawPoint (point) {
-        if (point.clusterID == 0) this.ctx.fillStyle = "#000000";
+        if (point.clusterID == 0) this.ctx.fillStyle = "#ffffff";
         else this.ctx.fillStyle = this.colors.get(point.clusterID);
         this.ctx.beginPath();
         this.ctx.arc(point.x, point.y, 7, 0, 2 * Math.PI); 
@@ -137,64 +137,65 @@ class DataClusters {
         this.draw();
     }
 
-    kMeansClustering(count = 8) {
-        //https://ru.wikipedia.org/wiki/K-means%2B%2B
-        this.clustersCount = count;
-        if (this.clustersCount > this.points.length) return;
+    // kMeansClustering(count = 8) {
+    //     //https://ru.wikipedia.org/wiki/K-means%2B%2B
+    //     this.clustersCount = count;
+    //     if (this.clustersCount > this.points.length) return;
 
-        this.clusters = [];
-        this.generateColors();
-        this.points.forEach(point => point.clusterID = 0);
+    //     this.clusters = [];
+    //     this.generateColors();
+    //     this.points.forEach(point => point.clusterID = 0);
 
-        // инициализируем случайные центроиды
-        for (let i = 0; i < this.clustersCount; ++i) {
+    //     // инициализируем случайные центроиды
+    //     for (let i = 0; i < this.clustersCount; ++i) {
 
-            let point = this.points[Math.floor(Math.random() * this.points.length)];
-            for (let i = 0; i < this.points.length && point.clusterID != 0; ++i)
-                point = this.points[Math.floor(Math.random() * this.points.length)];
+    //         let point = this.points[Math.floor(Math.random() * this.points.length)];
+    //         for (let i = 0; i < this.points.length && point.clusterID != 0; ++i)
+    //             point = this.points[Math.floor(Math.random() * this.points.length)];
             
-            let newCluster = new Cluster(point.x, point.y, i+1);
+    //         let newCluster = new Cluster(point.x, point.y, i+1);
 
-            this.clusters.push(newCluster);
-        }
+    //         this.clusters.push(newCluster);
+    //     }
 
-        //
-        for (let step = 0; step < 20000; ++step) {
-            for (let i = 0; i < this.clusters.length; ++i) this.clusters[i].clusterPoints = [];
+    //     //
+    //     for (let step = 0; step < 200; ++step) {
+    //         for (let i = 0; i < this.clusters.length; ++i) this.clusters[i].clusterPoints = [];
 
-            // для каждой точки считаем ближайший к ней центр кластера
-            for (let i = 0; i < this.points.length; ++i) {
+    //         // для каждой точки считаем ближайший к ней центр кластера
+    //         for (let i = 0; i < this.points.length; ++i) {
 
-                let nearest = {dist: 10000000000000000000000, index:0};
-                for (let j = 0; j < this.clusters.length; ++j) {
-                    const d = distance(this.points[i], this.clusters[j]);
-                    if (d < nearest.dist) {
-                        nearest = { dist: d, index: j };
-                    }
-                }
-                this.points[i].clusterID = nearest.index + 1;
-                this.clusters[nearest.index].clusterPoints.push(this.points[i]);
-            }
+    //             let nearest = {dist: 10000000000000000000000, index:0};
+    //             for (let j = 0; j < this.clusters.length; ++j) {
+    //                 const d = distance(this.points[i], this.clusters[j]);
+    //                 if (d < nearest.dist) {
+    //                     nearest = { dist: d, index: j };
+    //                 }
+    //             }
+    //             this.points[i].clusterID = nearest.index + 1;
+    //             this.clusters[nearest.index].clusterPoints.push(this.points[i]);
+    //         }
 
-            // пересчет позиции центра кластера (новое значение = среднее значение точек кластера)
-            for (let clusterNumber = 0; clusterNumber < this.clustersCount; ++clusterNumber) {
-                if (this.clusters[clusterNumber].clusterPoints.length === 0) continue;
-                let xsum = 0, ysum = 0;
-                for (let i = 0; i < this.clusters[clusterNumber].clusterPoints.length; ++i) {
-                    xsum += this.clusters[clusterNumber].clusterPoints[i].x;
-                    ysum += this.clusters[clusterNumber].clusterPoints[i].y;
-                }
-                this.clusters[clusterNumber].x = xsum / this.clusters[clusterNumber].clusterPoints.length;
-                this.clusters[clusterNumber].y = ysum / this.clusters[clusterNumber].clusterPoints.length;
-            }
-        }
+    //         // пересчет позиции центра кластера (новое значение = среднее значение точек кластера)
+    //         for (let clusterNumber = 0; clusterNumber < this.clustersCount; ++clusterNumber) {
+    //             if (this.clusters[clusterNumber].clusterPoints.length === 0) continue;
+    //             let xsum = 0, ysum = 0;
+    //             for (let i = 0; i < this.clusters[clusterNumber].clusterPoints.length; ++i) {
+    //                 xsum += this.clusters[clusterNumber].clusterPoints[i].x;
+    //                 ysum += this.clusters[clusterNumber].clusterPoints[i].y;
+    //             }
+    //             this.clusters[clusterNumber].x = xsum / this.clusters[clusterNumber].clusterPoints.length;
+    //             this.clusters[clusterNumber].y = ysum / this.clusters[clusterNumber].clusterPoints.length;
+    //         }
+    //     }
 
-        for (let i = 0; i < this.points.length; ++i)
-            this.points[i].color = this.colors.get(this.points[i].clusterID);
-        this.drawAll();
-    }
+    //     for (let i = 0; i < this.points.length; ++i)
+    //         this.points[i].color = this.colors.get(this.points[i].clusterID);
+    //     this.drawAll();
+    // }
 
-    kMeansClusteringBOOST(count = 5) {
+    kMeansClustering(count = 5) {
+        /* K-Means++ ! */
         //https://ru.wikipedia.org/wiki/K-means%2B%2B
         //https://habr.com/ru/articles/829202/
         this.clustersCount = count;
@@ -204,26 +205,58 @@ class DataClusters {
         this.generateColors();
         this.points.forEach(point => point.clusterID = 0);
 
-        // инициализируем случайные центроиды
-        for (let i = 0; i < this.clustersCount; ++i) {
-
-            let point = this.points[Math.floor(Math.random() * this.points.length)];
-            for (let i = 0; i < this.points.length && point.clusterID != 0; ++i)
-                point = this.points[Math.floor(Math.random() * this.points.length)];
+        let point = this.points[Math.floor(Math.random() * this.points.length)];
+        let newCluster = new Cluster(point.x, point.y, 1);
+        newCluster.clusterPoints.push(point);
+        this.clusters.push(newCluster);
+        
+        for (let clust = 1; clust < this.clustersCount; ++clust) {
             
-            let newCluster = new Cluster(point.x, point.y, i+1);
+            let distances = [];
+            let sum = 0;
+            for (let i = 0; i < this.points.length; ++i) {
+                let minDist = {d: Infinity, pointID: i};
 
+                for (let k = 0; k < this.clustersCount; ++k) {
+                    if ((!this.clusters[k]) || this.clusters[k].clusterID == 0) continue;
+
+                    let dist = Math.pow(distance(this.points[i], this.clusters[k]), 2); 
+                    if (minDist.d > dist) {
+                        minDist.d = dist;
+                    }
+                }
+                sum += minDist.d;
+                distances.push(minDist);
+            }
+
+            let threshold = Math.random() * (sum / 2) + sum/2;
+            let currentSum = 0;
+            let newClustData;
+
+            for (let i = 0; currentSum < threshold; ++i) {
+                currentSum += distances[i].d;
+                if (currentSum > threshold) {
+                    newClustData = distances[i].pointID;
+                    break;
+                }
+            }
+
+            let newCluster = new Cluster(
+                this.points[newClustData].x,
+                this.points[newClustData].y, clust + 1);
+            newCluster.clusterPoints.push(this.points[newClustData]);
             this.clusters.push(newCluster);
         }
 
+
         let maxWCSS = 0;
-        for (let step = 0; step < 20000; ++step) {
+        for (let step = 0; step < 200; ++step) {
             for (let i = 0; i < this.clusters.length; ++i) this.clusters[i].clusterPoints = [];
 
             // для каждой точки считаем ближайший к ней центр кластера
             for (let i = 0; i < this.points.length; ++i) {
 
-                let nearest = {dist: 10000000000000000000000, index:0};
+                let nearest = {dist: Infinity, index:0};
                 for (let j = 0; j < this.clusters.length; ++j) {
                     const d = distance(this.points[i], this.clusters[j]);
                     if (d < nearest.dist) {
