@@ -88,7 +88,7 @@ class Population{
     // выбор особи для скрещивания методом турнира
     makeTournament(){
         let tournament = [];
-        let tournamentSize = 20;
+        let tournamentSize = 50;
         for(let i = 0; i < tournamentSize; i++){
             tournament.push(this.arrayPopulation[Math.floor(Math.random() * this.arrayPopulation.length)]);
         }
@@ -99,7 +99,7 @@ class Population{
     // когда изменения лучший особи в популяции не происходит, принудительно удаляем
     // самых непригодных особей и создаем вместо них новых
     genocide(){
-        let sizeGenocide = Math.floor(this.arrayPopulation.length / 10);
+        let sizeGenocide = Math.floor(this.arrayPopulation.length / 5);
         this.arrayPopulation.splice(-sizeGenocide); // удаляем с конца, так как самые непригодные будут в конце массива после отсортировки
         for(let i = 0; i < sizeGenocide; i++){
             this.arrayPopulation.push(uniqueChromosome(this.points, this.arrayPopulation));
@@ -109,7 +109,7 @@ class Population{
 
     // скрещивание
     crossover(){
-        const eliteCount = 15; // размер элитной группы
+        const eliteCount = 30; // размер элитной группы
         // элитная группа, которая содержит лучших особей, которых нельзя подвергать изменениям
         const elites = this.arrayPopulation.slice(0, eliteCount).map(chrom => new Chromosome(chrom.way.slice()));
 
@@ -184,9 +184,9 @@ class Population{
 
 async function geneticAlgorithm(points, drawPath){
 
-    const sizePopulation = 30; // размер популяции
-    const percentMutation = 0.4; // процент мутации
-    const countPopulation = 500; // количество изменения популяции
+    const sizePopulation = 100; // размер популяции
+    const percentMutation = 0.15; // процент мутации
+    const countPopulation = 5000; // количество изменения популяции
     const countChild = 10; // количество скрещиваний на каждой итерации
     let countNoImproved = 0; // счетчик количества итераций без изменения
     const notImproved = 30; // сколько итераций может быть без изменений
@@ -221,5 +221,6 @@ async function geneticAlgorithm(points, drawPath){
             countNoImproved = 0;
         }
     }
+    console.log(bestChromosome.distance);
     return;
 }
