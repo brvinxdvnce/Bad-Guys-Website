@@ -7,6 +7,11 @@ class Paint {
         this.canvas = document.getElementById('dwaring-board');
         this.ctx = this.canvas.getContext('2d');
 
+        //var brain = require('brain.js');
+        //var net = new brain.NeuralNetwork();
+        
+        this.model;
+
         this.canvas.width  = 750;
         this.canvas.height = 750;
 
@@ -66,7 +71,30 @@ class Paint {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    guessTheNumber () {
-
+    async guessTheNumber () {  
+        loadmodel();  
+        const tensor = preprocessCanvas();
+        const predictions = await model.predict(tensor).data();
+        const digit = predictions.indexOf(Math.max(...predictions));
+      
+        document.getElementById('result').innerText = `Цифра: ${digit}`;
+      
+        tensor.dispose();
     }
+
+    
+async loadmodel() {
+    this.this.model = await tf.loadLayersthis.this.model('https://storage.googleapis.com/tfjs-models/tfjs/mnist/model.json');
+    console.log('Модель загружена!');
 }
+
+
+    async predictDigit() {
+        if (!this.model) {
+            alert('Модель еще загружается!');
+            return;
+            }
+          
+        }
+    }
+

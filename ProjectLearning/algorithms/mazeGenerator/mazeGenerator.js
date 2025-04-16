@@ -18,40 +18,6 @@ function createSquareMatrix(size, value = 0) {
     return Array.from({ length: size }, () => Array.from({ length: size }, () => value))
 }
 
-//получение матрицы смежности лабиринта
-function getAdjacencyMatrixFromMaze(maze) {
-    let adjacencyMatrix = createSquareMatrix(maze[0].length * maze[0].length, 0)
-    //0 - есть возможность пройти
-    //1 - стенка
-    for (let i = 0; i < maze[0].length; ++i) {
-        for (let j = 0; j < maze[0].length; ++j) {
-            if (maze[i][j] == 1) continue;
-
-            if (j - 1 >= 0 && !maze[i][j-1]) {
-                adjacencyMatrix
-                [i*maze[0].length + j]
-                [i*maze[0].length + j - 1] = 1;
-            } //left
-            if (i - 1 >= 0 && !maze[i-1][j]) {
-                adjacencyMatrix
-                [i*maze[0].length + j]
-                [(i-1)*maze[0].length + j] = 1;
-            } //up
-            if (j + 1 < maze[0].length && !maze[i][j+1]) {
-                adjacencyMatrix
-                [i*maze[0].length + j]
-                [i*maze[0].length + j + 1] = 1;
-            } //right
-            if (i + 1 < maze[0].length && !maze[i+1][j]) {    
-                adjacencyMatrix
-                [i*maze[0].length + j]
-                [(i+1)*maze[0].length + j] = 1;
-            } //down
-        }
-    }
-    return adjacencyMatrix;
-}
-
 class Cell {
     constructor(x, y, parent = null) {
       this.x = x;
@@ -206,24 +172,6 @@ class Grid {
             this.draw();
         }
     }
-    
-    //возвращает смежные вершины (пары индексов-координат)
-    getAdjacentVertices(i, j) {
-        let adjacent = [];
-        if (j - 1 >= 0 && !this.grid[i][j-1]) {
-            adjacent.push({y: i, x: j-1});
-        }//left
-        if (i - 1 >= 0 && !this.grid[i-1][j]) {
-            adjacent.push({y: i-1, x: j});
-        }//up
-        if (j + 1 < maze[0].length && !this.grid[i][j+1]) {
-            adjacent.push({y: i, x: j+1});
-        }//right
-        if (i + 1 < maze[0].length && !this.grid[i+1][j]) {  
-            adjacent.push({y: i+1, x: j});
-        }//down
-        return adjacent;
-    }
 
     randomMazeGenerator() {
         for(let i = 0; i < this.cellCountInSide; i++) {
@@ -234,26 +182,27 @@ class Grid {
         this.draw();
     }
 
-    generateMaze() {
+    async generateMaze() {
         // для норм отображения сторона либиринта должна быть нечетной длины, иначе
         // получается некрасиво
+
         this.grid = createSquareMatrix(this.cellCountInSide, 1);
         let startX = getRandomInt(0, this.cellCountInSide);
-        startX += startX % 2;
         let startY = getRandomInt(0, this.cellCountInSide);
+        startX += startX % 2;
         startY += startY % 2;
         this.grid[startX][startY] = 0;
         
         let queue = [];
-        let inQueue = createSquareMatrix(this.cellCountInSide, 0);
+        let visited = [];
         
         const addToQueue = (x, y) => {
             if (x >= 0 && y >= 0 &&
                 x < this.cellCountInSide &&
                 y < this.cellCountInSide &&
-                !inQueue[x][y] && this.grid[x][y] >= 1) {
-                queue.push({x : x, y : y });
-                inQueue[x][y] = true;
+                !visited.includes(`${x},${y}`) && this.grid[x][y] >= 1) {
+                queue.push({x : x, y : y });    
+                visited.push(`${x},${y}`);
             }
         };
 
@@ -262,6 +211,8 @@ class Grid {
         addToQueue(startX - 2, startY);
         addToQueue(startX + 2, startY);
 
+        this.draw();
+        await sleep(10);
         while (queue.length > 0) {
             let index = getRandomInt(0, queue.length);
             let cell = queue[index];
@@ -269,6 +220,8 @@ class Grid {
             let x = cell.x;
             let y = cell.y;
             this.grid[x][y] = 0;
+            this.drawCell(x, y);
+            await sleep(0.5);
 
             let neighbors = [];
             if (y - 2 >= 0 &&
@@ -290,7 +243,8 @@ class Grid {
 
             let randNeighbor = neighbors[getRandomInt(0, neighbors.length)];
             this.grid[randNeighbor.x][randNeighbor.y] = 0;
-            this.grid[x][y] = 0; // Добавляем клетку в лабиринт только после соединения
+            this.drawCell(randNeighbor.x, randNeighbor.y);
+            await sleep(0.5);
 
             // Добавляем соседние клетки в очередь
             addToQueue(x, y - 2);

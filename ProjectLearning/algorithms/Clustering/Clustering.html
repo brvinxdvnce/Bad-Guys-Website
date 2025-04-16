@@ -20,8 +20,13 @@
                 <canvas id="clustering-field" width="1000" height="1000" style="border:3px solid #000;"></canvas>
 
                 <div id = buttons class ="p-3 mb-2 text-white">
-                    <div class="btn btn-primary btn-lg active"  ; onclick = "canv.kMeansClustering()">Начать</div>
-                    <div class="btn btn-secondary btn-lg active"; onclick = "canv.generateRandomPoints(1000)">Очистить</div>
+                    <button class = "cluster-buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
+                    <input  class = "cluster-buttons"; type    = "number" id="clusters_count" placeholder="clusters_count">
+                    <button class = "cluster-buttons"; onclick = "canv.kMeansClustering()">k-means</button>
+                    <button class = "cluster-buttons"; onclick = "canv.kMeansClustering()">dbscan</button>
+                    <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">сгенерить</button>
+                    <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">сгенерить</button>
+                    
                 </div>
             </div>
         </div>
