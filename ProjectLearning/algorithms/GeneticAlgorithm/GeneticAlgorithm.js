@@ -185,7 +185,7 @@ class Population{
 async function geneticAlgorithm(points, drawPath){
 
     const sizePopulation = 100; // размер популяции
-    const percentMutation = 0.15; // процент мутации
+    const percentMutation = 0.15;  // процент мутации
     const countPopulation = 5000; // количество изменения популяции
     const countChild = 10; // количество скрещиваний на каждой итерации
     let countNoImproved = 0; // счетчик количества итераций без изменения

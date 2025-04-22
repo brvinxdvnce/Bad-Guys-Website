@@ -39,8 +39,8 @@ class Grid {
         this.canvas = document.getElementById('maze_field');
         this.ctx = this.canvas.getContext('2d');
 
-        this.canvas.width  = 1000;
-        this.canvas.height = 1000;
+        this.canvas.width  = 600;
+        this.canvas.height = 600;
 
         this.grid = createSquareMatrix(cellCountInSide, 0);
 
