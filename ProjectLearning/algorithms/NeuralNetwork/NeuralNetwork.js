@@ -273,7 +273,7 @@ class Paint {
         }
 
         // Или создать новую модель:
-        createModel();
+        //createModel();
 
 
 
