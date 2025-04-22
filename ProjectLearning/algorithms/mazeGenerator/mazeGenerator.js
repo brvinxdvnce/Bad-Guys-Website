@@ -101,6 +101,7 @@ class Grid {
     }
 
     drawCell (i, j) {
+        if (i < 0 || j < 0 || i >= this.cellCountInSide || j >= this.cellCountInSide) return;
         switch (this.grid[i][j]) {
             case 0: //свободная зона
                 this.ctx.fillStyle = "rgb(255, 255, 255)";
@@ -251,6 +252,10 @@ class Grid {
             addToQueue(x, y + 2);
             addToQueue(x - 2, y);
             addToQueue(x + 2, y);
+            // this.drawCell(x, y - 2);
+            // this.drawCell(x, y + 2);
+            // this.drawCell(x - 2, y);
+            // this.drawCell(x + 2, y);
         
         }
         console.log("maze has been genered");
