@@ -4,29 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clustering</title>
+    <link rel="stylesheet" href="Clusrering.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src = "Clustering.js"></script>
 </head>
-<body style="background-color:rgb(114, 115, 116);">
+<body>
     <div id = "app" class="container text-center">
-
-        <div>
-            <a href ="../../indexPrototype.html">Вернуться на главную страницу</a>
-        </div>
         <div id ="site" class="content">
-            <div class="row"></div>
-            <h1>Clustering</h1>
             <div class="clustering-workspace">
-                <canvas id="clustering-field" width="1000" height="1000" style="border:3px solid #000;"></canvas>
+                <div class="clustering-field">
+                    <canvas id="clustering-field" width="600" height="600" style="border:3px solid #000;"></canvas>
+                </div>
+            
+                <div class = "clustering-navigation">
+                    <div class="text-output">
+                        <h1>Кластеризация</h1>
+                        <p style = "text-align: justify">
+                            Кластеризация — это метод машинного обучения без учителя, который группирует объекты по схожести признаков. Её цель — обнаружить естественные структуры в данных, разбив их на кластеры так, чтобы элементы внутри группы были максимально близки, а между группами — максимально различимы. Применяется в анализе клиентов, сегментации изображений, биоинформатике и других областях.
 
-                <div id = buttons class ="p-3 mb-2 text-white">
-                    <button class = "cluster-buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
-                    <input  class = "cluster-buttons" type="range" id="clusters_count" min="1" max="6" step="1" placeholder="clusters_count">
-                    <button class = "cluster-buttons"; onclick = "canv.kMeansClustering(parseInt(document.getElementById('clusters_count').value) || 2)">k-means</button>
-                    <button class = "cluster-buttons"; onclick = "canv.kMeansClustering()">dbscan</button>
-                    <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">сгенерить</button>
-                    <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">очистить</button>
-                    
+Ключевые алгоритмы:  
+▸ K-средних (K-means) — разделяет данные на *k* кластеров, минимизируя внутрикластерную дисперсию. Требует предварительного задания числа кластеров и чувствителен к выбросам.  
+▸ DBSCAN — выделяет группы на основе плотности данных, автоматически определяя количество кластеров. Устойчив к шумам и находит кластеры произвольной формы, но требует тонкой настройки параметров (ε-окрестность, минимальное число точек).
+                            
+                           
+                        </p>
+                    </div>
+                    <div class = "buttons-container">
+                        <button class = "cluster-buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
+                        <input  class = "cluster-buttons" type="range" id="clusters_count" min="1" max="6" step="1" placeholder="clusters_count">
+                        <button class = "cluster-buttons"; onclick = "canv.kMeansClustering(parseInt(document.getElementById('clusters_count').value) || 2)">k-means</button>
+                        <button class = "cluster-buttons"; onclick = "canv.kMeansClustering()">dbscan</button>
+                        <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">сгенерить</button>
+                        <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">очистить</button>
+                    </div>
                 </div>
             </div>
         </div>

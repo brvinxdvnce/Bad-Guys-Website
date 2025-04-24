@@ -9,9 +9,9 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Заголовок и параграф */
+
 h1 {
-font-size: 2rem; /* Используем относительные единицы */
+font-size: 2rem; 
 margin: 0 0 20px 0; 
 color: #ffffff;
 text-align: center; 
@@ -28,7 +28,7 @@ font-weight: bold;
 text-shadow: 1px 1px 2px #00000055;
 }
 
-/* Контейнер рабочего пространства */
+
 .maze-workspace {
   position: relative;
   background-color: rgba(34, 34, 34, 0.7);
@@ -37,21 +37,21 @@ text-shadow: 1px 1px 2px #00000055;
   display: grid;
   justify-content: center;
   align-items: center;
-  /* По умолчанию располагаем один столбец для узких экранов */
+
   grid-template-columns: 1fr;
   width: 100%;
   max-width: 1300px;
 }
 
-/* При ширине экрана выше 900px переключаемся на два столбца */
+
 @media (min-width: 900px) {
   .maze-workspace {
-      /* Если хочешь фиксированные значения — можно, но лучше использовать относительные единицы */
+      
       grid-template-columns: 1fr 1fr;
   }
 }
 
-/* Область лабиринта */
+
 .maze-field {
 max-width: 600px;
 width: 100%;
@@ -61,15 +61,15 @@ margin: 0 auto;
 canvas {
   border: 10px solid black;
   width: 100%;
-  height: auto; /* Поддержка пропорций */
+  height: auto; 
 }
 
-/* Навигация и текст */
+
 .maze-navigation {
   display: grid;
 }
 
-/* Остальные стили для кнопок и переключателей остаются без изменений */
+
 .maze_buttons {
 background: linear-gradient(135deg, #7258ae, #b71589);
 color: white;
@@ -82,6 +82,7 @@ box-shadow: 0 4px 14px rgba(162, 102, 235, 0.3);
 cursor: pointer;
 transition: all 0.3s ease;
 text-align: center;
+
 }
 
 .maze_buttons:hover{
@@ -148,23 +149,4 @@ border-radius: 50%;
 
 input {
 width: 70px;
-}
-
-.fixed-button {
-display: inline-block; 
-padding: 20px 30px;
-background-color: #323437; 
-color: white; 
-text-decoration: none;
-border-radius: 20px; 
-position: fixed; 
-bottom: 20px;
-right: 20px; 
-z-index: 1000; 
-font-size: 24px;
-transition: background-color 0.3s ease; 
-}
-
-.fixed-button:hover {
-background-color: #a3adb7; 
 }

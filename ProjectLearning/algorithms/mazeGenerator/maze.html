@@ -26,7 +26,7 @@
                     </p>
                 </div>
                 <div class = "buttons-container">
-                    <a href="../../indexPrototype.html" class="fixed-button">Home</a>
+                    <button class = "maze_buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
                     <input  class = "maze_buttons"; type="number" id="size_input" placeholder="max 250">
                     <button class = "maze_buttons"; onclick="delete canv; canv=new Grid(parseInt(document.getElementById('size_input').value) || 31); canv.generateMaze()">update maze</button>
                     <button class = "maze_buttons"; onclick="canv.cleanWay(); canv.goAStar()">start a*</button>

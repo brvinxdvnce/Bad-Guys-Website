@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    padding: 20px;
+    display: grid;
+    justify-content: center;
+    background-image: url('kvadraty_romby_raznotsvetnyj_1208773_1920x1080.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  h1 {
+  font-size: 3rem; 
+  margin: 0 0 20px 0; 
+  color: #ffffff;
+  text-align: center; 
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #00000055;
+  }
+  
+  p {
+  font-size: 1.3rem;
+  margin: 0 30px 40px 0; 
+  color: #ffffff;
+  text-align: center; 
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #00000055;
+  }
+  
+  
+  .clustering-workspace {
+    position: relative;
+    background-color: rgba(34, 34, 34, 0.7);
+    border-radius: 0.8rem;
+    gap: 10px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+  
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 1300px;
+  }
+  
+  
+  @media (min-width: 900px) {
+    .clustering-workspace {
+        grid-template-columns: 1fr 1fr;
+    }
+  }
+  
+  
+  .clustering-field {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  }
+  
+  canvas {
+    border: 10px solid black;
+    width: 100%;
+    height: auto; 
+  }
+  
+  
+  .clustering-navigation {
+    display: grid;
+  }
+  
+  
+  .cluster-buttons {
+    position: relative;
+    display: inline-block;
+    padding: 0.6em 1.4em;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 
+      transform 0.2s ease-out, 
+      box-shadow 0.2s ease-out, 
+      background 0.4s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    outline: none;
+  }
+  
+  .cluster-buttons:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #4b0fb1 0%, #1a5ed6 100%);
+  }
+
+  .cluster-buttons:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  .cluster-buttons[type="range"] {
+    -webkit-appearance: none;
+    width: 150px;
+    height: 6px;
+    padding: 0;
+    background: #ddd;
+    border-radius: 3px;
+    margin: 0 8px;
+    box-shadow: none;
+    transition: background 0.2s;
+  }
+  .cluster-buttons[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #2575fc;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .cluster-buttons[type="range"]::-webkit-slider-thumb:hover {
+    background: #4b0fb1;
+    transform: scale(1.1);
+  }
+  
+  .buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+  }
+  
+  
+  
+
+
+  
