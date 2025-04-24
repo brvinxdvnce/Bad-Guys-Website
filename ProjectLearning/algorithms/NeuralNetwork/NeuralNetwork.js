@@ -132,6 +132,51 @@ class Paint {
         else this.currentImage = "error_picture";   
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*
     async guessTheNumber () {  
         this.loadmodel();  
@@ -273,7 +318,7 @@ class Paint {
         }
 
         // Или создать новую модель:
-        //createModel();
+        //  createModel();
 
 
 
