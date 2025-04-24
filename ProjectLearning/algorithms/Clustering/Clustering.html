@@ -21,11 +21,11 @@
 
                 <div id = buttons class ="p-3 mb-2 text-white">
                     <button class = "cluster-buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
-                    <input  class = "cluster-buttons"; type    = "number" id="clusters_count" placeholder="clusters_count">
-                    <button class = "cluster-buttons"; onclick = "canv.kMeansClustering()">k-means</button>
+                    <input  class = "cluster-buttons" type="range" id="clusters_count" min="1" max="6" step="1" placeholder="clusters_count">
+                    <button class = "cluster-buttons"; onclick = "canv.kMeansClustering(parseInt(document.getElementById('clusters_count').value) || 2)">k-means</button>
                     <button class = "cluster-buttons"; onclick = "canv.kMeansClustering()">dbscan</button>
                     <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">сгенерить</button>
-                    <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">сгенерить</button>
+                    <button class = "cluster-buttons"; onclick = "canv.generateRandomPoints(1000)">очистить</button>
                     
                 </div>
             </div>

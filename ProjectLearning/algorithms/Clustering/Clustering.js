@@ -194,7 +194,7 @@ class DataClusters {
     //     this.drawAll();
     // }
 
-    kMeansClustering(count = 5) {
+    kMeansClustering(count = 6) {
         /* K-Means++ ! */
         //https://ru.wikipedia.org/wiki/K-means%2B%2B
         //https://habr.com/ru/articles/829202/
@@ -288,26 +288,11 @@ class DataClusters {
     }
 
     DBSCAN () {
-
-    }
-
-    clusterAnalysis (typeOfClustering) {
-        switch (typeOfClustering){
-            case "k-means":
-                KMeansClustering();
-                break;
-            case "":
-                break;
-            case "":
-                break;
-            case "":
-                break;
-            case "":
-                break;
-                case "":
-            break;
-                case "":
-            break;
+        let distances = [];
+        for (let i = 0; i < this.points.length; ++i) {
+            for (let j = 0; j < this.points.length; ++j) {
+                distances[i].push(distance(this.points[i], this.points[j]));
+            }
         }
         
     }
