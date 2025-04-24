@@ -30,8 +30,8 @@ class DataClusters {
         this.canvas = document.getElementById('clustering-field');
         this.ctx = this.canvas.getContext('2d');
 
-        this.canvas.width  = 1000;
-        this.canvas.height = 1000;
+        this.canvas.width  = 600;
+        this.canvas.height = 600;
 
         this.clustersCount = 0;
         this.points   = [];
