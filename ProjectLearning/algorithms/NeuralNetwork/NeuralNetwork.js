@@ -18,8 +18,8 @@ class Paint {
         
         this.model;
 
-        this.canvas.width  = 750;
-        this.canvas.height = 750;
+        this.canvas.width  = 600;
+        this.canvas.height = 600;
 
         this.grid = createSquareMatrix(50, 0);
 
@@ -85,11 +85,11 @@ class Paint {
 
         const grayPixels = [];
         for (let i = 0; i < data.length; i += 4) {
-            const inverted = (
+            let inverted = (
                 0.299 * data[i + 0] + 
                 0.587 * data[i + 1] + 
                 0.114 * data[i + 2]); // Формула яркости
-                inverted = 255 - inverted;
+            inverted = 255 - inverted;
             grayPixels.push(inverted / 255); // Нормализация в [0, 1]
         }
         console.log(grayPixels);
@@ -134,9 +134,68 @@ class Paint {
 
     randomPredict () {
         this.img.src = this.images[Math.floor(Math.random() * 10)];
-        console.log("пикча изменена");
     }
 
+    async createModel() {
+        const model = tf.sequential();
+        
+        // первый скрытый слой (784 -> 200)
+        model.add(tf.layers.dense({
+            units: 200,
+            inputShape: [784],
+            activation: 'relu',
+            name: 'hidden_layer'
+        }));
+        
+        // выходной слой (200 -> 10)
+        model.add(tf.layers.dense({
+            units: 10,
+            activation: 'softmax',
+            name: 'output_layer'
+        }));
 
+        // загрузка весов
+        const [weights200, bias200, weights10, bias10] = await Promise.all([
+            fetch('weights_200.json').then(res => res.json()),
+            fetch('biases_200.json').then(res => res.json()),
+            fetch('weights_10.json').then(res => res.json()),
+            fetch('biases_10.json').then(res => res.json())
+        ]);
+        
+        // преобразуем JSON в тензоры
+        // kernel - по сути, матрица. где для каждого элемента текущего слоя создаются
+        // значения для каждогоиз нейронов следующего слоя 
+        // bias - смещение для каждого нейрона
 
+        const kernel1 = tf.tensor2d(weights200, [784, 200]);
+        const bias1   = tf.tensor1d(bias200);
+        const kernel2 = tf.tensor2d(weights10, [200, 10]);
+        const bias2   = tf.tensor1d(bias10);
+        
+        // устанавливаем веса в модель
+        model.setWeights([kernel1, bias1, kernel2, bias2]);
+
+        return model;
     }
+
+    async predict(image) {
+        const model = await this.createModel();
+        
+        // Предсказание
+        const output = model.predict(image);
+        const predictedDigit = output.argMax(1).dataSync()[0];
+        
+        // Очистка памяти
+        image.dispose();
+        output.dispose();
+        
+        return predictedDigit;
+    }
+
+    async runDredict() {
+        let image = tf.tensor2d(this.get28x28canv(), [1, 784]);
+        let res = await this.predict(image);
+        this.img.src = this.images[res];
+        console.log("цыфра ",res);
+    }
+}

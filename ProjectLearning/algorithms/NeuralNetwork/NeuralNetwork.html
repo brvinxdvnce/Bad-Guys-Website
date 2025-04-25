@@ -7,12 +7,16 @@
 
         <link rel="stylesheet" href="NeuralNetwork.css">
 
-        <script src = "NeuralNetwork.js"></script>
-        
+
+
         <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
         <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
         <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
-        <script src = "https://github.com/BrainJS/brain.js.git"></script>
+        <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+        <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
+
+
+        <script src = "NeuralNetwork.js"></script>
         <script src = "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     </head>
     <body>
@@ -22,11 +26,12 @@
             </div>
             
 
-            <img id = "ans_pic"; src = "numbers_images/default.jpg" width="750" height="750" alt="Ooooppsssss.....">
+            <img id = "ans_pic"; src = "numbers_images/default.jpg" width="600" height="600" alt="Ooooppsssss.....">
             <div class = "buttons-container">
                 <button class = "maze_buttons"; onclick="canv.clearField();">clear it</button>   
-                <button class = "maze_buttons"; onclick="canv.predict();">magic</button> 
+                <button class = "maze_buttons"; onclick="canv.runDredict();">magic</button> 
                 <button class = "maze_buttons"; onclick="canv.randomPredict();">random</button> 
+                <button class = "maze_buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
             </div>
         </div>
         

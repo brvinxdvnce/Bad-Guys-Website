@@ -222,7 +222,6 @@ class Grid {
             let y = cell.y;
             this.grid[x][y] = 0;
             this.drawCell(x, y);
-            await sleep(0.5);
 
             let neighbors = [];
             if (y - 2 >= 0 &&
@@ -245,7 +244,7 @@ class Grid {
             let randNeighbor = neighbors[getRandomInt(0, neighbors.length)];
             this.grid[randNeighbor.x][randNeighbor.y] = 0;
             this.drawCell(randNeighbor.x, randNeighbor.y);
-            await sleep(0.5);
+            await sleep(0.01);
 
             // Добавляем соседние клетки в очередь
             addToQueue(x, y - 2);

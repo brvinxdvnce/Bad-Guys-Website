@@ -199,10 +199,10 @@ class DataClusters {
             this.clusters.push(newCluster);
         }
 
-
-        let maxWCSS = 0;
-        for (let step = 0; step < 200; ++step) {
+        let wcssDif = [1]; 
+        for (let step = 0; (step < 200) && (Math.max(wcssDif) > 0.0001); ++step) {
             for (let i = 0; i < this.clusters.length; ++i) this.clusters[i].clusterPoints = [];
+            wcssDif = []; 
 
             // для каждой точки считаем ближайший к ней центр кластера
             for (let i = 0; i < this.points.length; ++i) {
@@ -228,9 +228,16 @@ class DataClusters {
                 }
                 this.clusters[clusterNumber].x = xsum / this.clusters[clusterNumber].clusterPoints.length;
                 this.clusters[clusterNumber].y = ysum / this.clusters[clusterNumber].clusterPoints.length;
-            }
 
-            //пересчет wcss
+                //пересчет wcss
+                let wcss = 0;
+                for (let i = 0; i < this.clusters[clusterNumber].clusterPoints.length; ++i) {
+                    wcss += distance(this.clusters[clusterNumber], this.clusters[clusterNumber].clusterPoints[i]);
+                }
+                wcssDif.push(this.clusters[clusterNumber].wcss - wcss);
+                this.clusters[clusterNumber].wcss = wcss;
+                
+            }
         }
 
         for (let i = 0; i < this.points.length; ++i)
