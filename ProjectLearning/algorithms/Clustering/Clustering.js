@@ -1,5 +1,3 @@
-
-//
 function distance(point1, point2) {
     return Math.sqrt(
         Math.pow(point1.x - point2.x, 2) +
@@ -11,7 +9,10 @@ class Point {
         this.x = x;
         this.y = y;
         this.clusterID = clusterID;
+        this.visited = false;
         this.color = "#000000";
+        this.type = "noise"; // for DBSCAN; it may be пограничная (Border), корневые Core или шум (Noise) 
+
     }
 }
 
@@ -37,6 +38,11 @@ class DataClusters {
         this.points   = [];
         this.clusters = [];
         this.colors   = new Map();
+        this.isDrawing = false;
+
+        this.canvas.addEventListener('mousedown', (e) => {this.isDrawing = true});
+        this.canvas.addEventListener('mouseup'  , (e) => {this.isDrawing = false});
+        this.canvas.addEventListener('mousemove', (e) => {if (this.isDrawing) this.handleClick(e)});
 
         this.canvas.addEventListener('click', (e) => this.handleClick(e));
 
@@ -121,7 +127,7 @@ class DataClusters {
     }
 
     //
-    generateRandomPoints (count = 60) {
+    generateRandomPoints (count) {
         for (let i = 0; i < count; ++i) {
             let point = new Point(
                 Math.floor(Math.random() * this.canvas.width),
@@ -133,68 +139,13 @@ class DataClusters {
 
     //
     clearPoints () {
+        this.clustersCount = 0;
+        this.clusters = [];
         this.points = [];
-        this.draw();
+        this.drawAll();
     }
 
-    // kMeansClustering(count = 8) {
-    //     //https://ru.wikipedia.org/wiki/K-means%2B%2B
-    //     this.clustersCount = count;
-    //     if (this.clustersCount > this.points.length) return;
-
-    //     this.clusters = [];
-    //     this.generateColors();
-    //     this.points.forEach(point => point.clusterID = 0);
-
-    //     // инициализируем случайные центроиды
-    //     for (let i = 0; i < this.clustersCount; ++i) {
-
-    //         let point = this.points[Math.floor(Math.random() * this.points.length)];
-    //         for (let i = 0; i < this.points.length && point.clusterID != 0; ++i)
-    //             point = this.points[Math.floor(Math.random() * this.points.length)];
-            
-    //         let newCluster = new Cluster(point.x, point.y, i+1);
-
-    //         this.clusters.push(newCluster);
-    //     }
-
-    //     //
-    //     for (let step = 0; step < 200; ++step) {
-    //         for (let i = 0; i < this.clusters.length; ++i) this.clusters[i].clusterPoints = [];
-
-    //         // для каждой точки считаем ближайший к ней центр кластера
-    //         for (let i = 0; i < this.points.length; ++i) {
-
-    //             let nearest = {dist: 10000000000000000000000, index:0};
-    //             for (let j = 0; j < this.clusters.length; ++j) {
-    //                 const d = distance(this.points[i], this.clusters[j]);
-    //                 if (d < nearest.dist) {
-    //                     nearest = { dist: d, index: j };
-    //                 }
-    //             }
-    //             this.points[i].clusterID = nearest.index + 1;
-    //             this.clusters[nearest.index].clusterPoints.push(this.points[i]);
-    //         }
-
-    //         // пересчет позиции центра кластера (новое значение = среднее значение точек кластера)
-    //         for (let clusterNumber = 0; clusterNumber < this.clustersCount; ++clusterNumber) {
-    //             if (this.clusters[clusterNumber].clusterPoints.length === 0) continue;
-    //             let xsum = 0, ysum = 0;
-    //             for (let i = 0; i < this.clusters[clusterNumber].clusterPoints.length; ++i) {
-    //                 xsum += this.clusters[clusterNumber].clusterPoints[i].x;
-    //                 ysum += this.clusters[clusterNumber].clusterPoints[i].y;
-    //             }
-    //             this.clusters[clusterNumber].x = xsum / this.clusters[clusterNumber].clusterPoints.length;
-    //             this.clusters[clusterNumber].y = ysum / this.clusters[clusterNumber].clusterPoints.length;
-    //         }
-    //     }
-
-    //     for (let i = 0; i < this.points.length; ++i)
-    //         this.points[i].color = this.colors.get(this.points[i].clusterID);
-    //     this.drawAll();
-    // }
-
-    kMeansClustering(count = 6) {
+    kMeansClustering(count) {
         /* K-Means++ ! */
         //https://ru.wikipedia.org/wiki/K-means%2B%2B
         //https://habr.com/ru/articles/829202/
@@ -286,14 +237,67 @@ class DataClusters {
             this.points[i].color = this.colors.get(this.points[i].clusterID);
         this.drawAll();
     }
-
-    DBSCAN () {
-        let distances = [];
-        for (let i = 0; i < this.points.length; ++i) {
-            for (let j = 0; j < this.points.length; ++j) {
-                distances[i].push(distance(this.points[i], this.points[j]));
-            }
+    
+    DBSCAN (minPts = 3, eps = 20) {
+        for (let point of this.points) {
+            point.clusterId = null;
+            point.type = "noise";
+            point.visited = false;
         }
+
+        let queue = [];
+        let nonVisitedPoints = this.points.length;
+
+        for (let clusterNumber = 1; nonVisitedPoints > 0; ++clusterNumber) {
+            for (let point of this.points) {
+                if (!point.visited) {
+                    queue.push(point);
+                    point.visited = true;
+                    nonVisitedPoints--;
+                    break;
+                }
+            }
+
+            if (queue.length === 0) break;
+            this.clustersCount += 1;
+
+            while (queue.length) {
+                let neighbors = [];
+                for (let i = 0; i < this.points.length; ++i) {
+                    if (distance(this.points[i], queue[0]) <= eps) {
+                        neighbors.push(this.points[i])
+                        if (!this.points[i].visited) {
+                            this.points[i].visited = true;
+                            nonVisitedPoints--;
+                        }
+                    }
+                }
+                
+                if (neighbors.length>= minPts) {
+                    queue[0].clusterID = clusterNumber;
+                    for (let p of neighbors) if (p.clusterID === 0) p.clusterID = clusterNumber;
+                    queue[0].type = "core";
+                    neighbors = neighbors.filter(n => !n.visited);
+                    queue = [...queue, ...neighbors];
+                }
+                else {  
+                    for (let neig of neighbors) {
+                        if ((neig.type === "core") && (neig.clusterID === clusterNumber)) {
+                            queue[0].type = "border";
+                            queue[0].clusterID = clusterNumber;
+                            break;
+                        }
+                    }
+                }
+                queue.shift();
+            }
+
+        }
+
+        this.generateColors();
+        for (let i = 0; i < this.points.length; ++i)
+            this.points[i].color = this.colors.get(this.points[i].clusterID);
+        this.drawAll();
         
     }
 }
