@@ -66,15 +66,6 @@ class Paint {
         const imageData = ctx.getImageData(0, 0, 28, 28);
         const data = imageData.data; // Массив вида [R, G, B, A, ...]
 
-        // скачивание 28х28 пикчи   :
-        // let dataurl = tempCanvas.toDataURL('image/png');
-
-        // const link = document.createElement('a');
-        // link.href = dataurl;
-        // link.download = "default1.png";
-
-        // // Запускаем скачивание
-        // link.click();
 
         const grayPixels = [];
         for (let i = 0; i < data.length; i += 4) {

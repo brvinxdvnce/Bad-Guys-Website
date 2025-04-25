@@ -42,10 +42,10 @@ function shuffle(array) {
 // создание уникальной хромосомы
 function uniqueChromosome(points, arrayPopulation){
     // Создадим первую хромосому
-    var newChrom = new Chromosome(shuffle(points.slice()));
+    var newChrom = new Chromosome(shuffle(points.slice())); // копия
     // Пока в популяции есть хромосома с таким же путем, генерируем новую
     let uniqueChromosomeCount = 0; // количество уникальных хромосом
-    while(arrayPopulation.some(chromosome => arraysEqual(chromosome.way, newChrom.way))){
+    while(arrayPopulation.some(chromosome => arraysEqual(chromosome.way, newChrom.way))){ //хоть какой то даст true тогда
         newChrom = new Chromosome(shuffle(points.slice()));
         uniqueChromosomeCount++;
         // если невозможно создать новую комбинацию, добавляем то что получилось (копию)
@@ -78,8 +78,8 @@ class Population{
         }
         else{
             // если процент мутации выше установленного меняем рандомные индексы местами
-            let index1 = Math.floor(Math.random() * array.length);
-            let index2 = Math.floor(Math.random() * (array.length - index1)) + index1;
+            let index1 = Math.floor(Math.random() * array.length); // 0 до array.length
+            let index2 = Math.floor(Math.random() * (array.length - index1)) + index1; // index 1 до конца
             [array[index1], array[index2]] = [array[index2], array[index1]];
             return array;
         }
@@ -111,7 +111,7 @@ class Population{
     crossover(){
         const eliteCount = 30; // размер элитной группы
         // элитная группа, которая содержит лучших особей, которых нельзя подвергать изменениям
-        const elites = this.arrayPopulation.slice(0, eliteCount).map(chrom => new Chromosome(chrom.way.slice()));
+        const elites = this.arrayPopulation.slice(0, eliteCount).map(chrom => new Chromosome(chrom.way.slice())); //копию от 0 до 30 создаем новые хромосомы
 
         const arrayPopulationOldLength = this.arrayPopulation.length;
 
@@ -144,7 +144,7 @@ class Population{
             
             // дозаполняем оставшееся для первого
             let index1 = (end + 1) % length;
-            for(let i = 0; i < length; i++){
+            for(let i = 0; i < length; i++){ //проходим по всем элементам хромосомы
                 let newItem = parent2[(end + 1 + i) % length];
                 if(!childWay1.includes(newItem)){
                     childWay1[index1] = newItem;
@@ -221,6 +221,5 @@ async function geneticAlgorithm(points, drawPath){
             countNoImproved = 0;
         }
     }
-    console.log(bestChromosome.distance);
     return;
 }
