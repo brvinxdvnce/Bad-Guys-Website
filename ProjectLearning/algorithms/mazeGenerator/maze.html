@@ -26,11 +26,12 @@
                     </p>
                 </div>
                 <div class = "buttons-container">
-                    <button class = "maze_buttons"; onclick ="window.location.href='../../indexPrototype.html'">home</button>
-                    <input  class = "maze_buttons"; type="number" id="size_input" placeholder="max 250">
+                    <button class = "maze_buttons"; onclick ="window.location.href='../../indexPrototype.html'">home page</button>
+                    <input  class = "maze_buttons"; type="number" id="size_input" placeholder="size">
                     <button class = "maze_buttons"; onclick="delete canv; canv=new Grid(parseInt(document.getElementById('size_input').value) || 31); canv.generateMaze()">update maze</button>
                     <button class = "maze_buttons"; onclick="canv.cleanWay(); canv.goAStar()">start a*</button>
                     <button class = "maze_buttons"; onclick="canv.clean()"                   >clean grid</button>
+                    
                     <div class="container">
                         <label class="switch" for="checkbox">
                           <input type="checkbox" id="checkbox" />

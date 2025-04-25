@@ -4,7 +4,6 @@ function createSquareMatrix(size, value = 0) {
 
 function ReLU(a) {
     // rectified linear unit
-    // функция активации нейронов 
     return a > 0 ? a : 0;
 }
 
@@ -12,11 +11,6 @@ class Paint {
     constructor(cellCountInSide = 50) {
         this.canvas = document.getElementById('dwaring-board');
         this.ctx = this.canvas.getContext('2d');
-
-        //var brain = require('brain.js');
-        //var net = new brain.NeuralNetwork();
-        
-        this.model;
 
         this.canvas.width  = 600;
         this.canvas.height = 600;
@@ -28,7 +22,6 @@ class Paint {
         this.cellHeight = this.canvas.height /  cellCountInSide;
 
         this.isDrawing = false;
-        // this.lineWidth = 1;
 
         this.img = document.getElementById('ans_pic');
         this.images = [
@@ -43,7 +36,7 @@ class Paint {
             "numbers_images/number_8.png",
             "numbers_images/number_9.png",
         ]; 
-        this.img.src = "numbers_images/default.jpg";
+        this.img.src = "numbers_images/default.png";
 
         this.canvas.addEventListener('mousedown', (e) => {
            this.isDrawing = true;
