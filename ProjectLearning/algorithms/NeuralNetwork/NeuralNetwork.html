@@ -12,12 +12,14 @@
     </head>
     <body>
         <div class = "net-workspace">
-            <div class = "dwaring-board">
-                <canvas id = "dwaring-board"></canvas>
+            <div class="boards-container">
+                <div class="dwaring-board">
+                    <canvas id="dwaring-board"></canvas>
+                </div>
+                <div class="number-board">
+                    <img id="ans_pic" src="numbers_images/default.jpg" width="600" height="600" alt="Ooooppsssss.....">
+                </div>
             </div>
-            
-
-            <img id = "ans_pic"; src = "numbers_images/default.jpg" width="600" height="600" alt="Ooooppsssss.....">
             <div class = "buttons-container">
                 <button class = "maze_buttons"; onclick="canv.clearField();">clear it</button>   
                 <button class = "maze_buttons"; onclick="canv.runDredict();">magic</button> 

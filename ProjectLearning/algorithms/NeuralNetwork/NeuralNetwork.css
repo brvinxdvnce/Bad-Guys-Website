@@ -1,20 +1,72 @@
-body {
-    background-color: rgb(199, 95, 14);
-    margin: 0;
-    display: grid;
-    justify-content: center;
-    overflow:  hidden;
+
+.net-workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
 }
+
+body {
+    background-image: url("99px_ru_wallpaper_369537_devushka_s_golubimi_volosami_stoit_na_nochnoj_ulice.jpg");
+    background-size: cover;           
+    background-repeat: no-repeat;     
+    background-position: center;      
+    background-attachment: fixed;     
+}
+
+
+.boards-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+
+.dwaring-board, .number-board {
+    border: 2px solid #ccc;
+    background-color: white;
+    width: 600px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 canvas {
-    border: 10px solid black;
+    width: 100%;
+    height: 100%;
 }
 
-.net-workspace{
-    position: relative;
-    grid-template-columns: 750px 500px;
-    border-radius: 0.8rem;
-    display: grid;
+
+.number-board img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.buttons-container {
+    margin-top: 30px;
+    display: flex;
     justify-content: center;
-    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.maze_buttons {
+    padding: 12px 24px;
+    font-size: 20px;
+    border: #ffa500;    
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ff8420, #ffdf0e);
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.maze_buttons:hover {
+    background: linear-gradient(135deg, #ffa006, #ffeb0d);
 }
