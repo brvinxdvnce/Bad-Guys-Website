@@ -76,7 +76,6 @@ class Paint {
             inverted = 255 - inverted;
             grayPixels.push(inverted / 255); // Нормализация в [0, 1]
         }
-        console.log(grayPixels);
         return grayPixels;
     }
 
